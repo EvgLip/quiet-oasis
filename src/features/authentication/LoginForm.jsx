@@ -4,11 +4,12 @@ import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 
-function LoginForm() {
+function LoginForm ()
+{
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit() {}
+  function handleSubmit () { }
 
   return (
     <Form onSubmit={handleSubmit}>
@@ -16,7 +17,7 @@ function LoginForm() {
         <Input
           type="email"
           id="email"
-          // This makes this form better for password managers
+          //Это делает данную форму более удобной для менеджеров паролей
           autoComplete="username"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -32,7 +33,7 @@ function LoginForm() {
         />
       </FormRowVertical>
       <FormRowVertical>
-        <Button size="large">Login</Button>
+        <Button size="large">Вход</Button>
       </FormRowVertical>
     </Form>
   );

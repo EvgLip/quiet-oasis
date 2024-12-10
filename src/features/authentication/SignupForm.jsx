@@ -5,7 +5,8 @@ import Input from "../../ui/Input";
 
 // Email regex: /\S+@\S+\.\S+/
 
-function SignupForm() {
+function SignupForm ()
+{
   return (
     <Form>
       <FormRow label="Full name" error={""}>
@@ -25,11 +26,11 @@ function SignupForm() {
       </FormRow>
 
       <FormRow>
-        {/* type is an HTML attribute! */}
+        {/*type - это атрибут HTML!*/}
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>Create new user</Button>
+        <Button>Создать нового пользователя</Button>
       </FormRow>
     </Form>
   );

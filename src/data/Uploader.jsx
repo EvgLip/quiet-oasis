@@ -15,33 +15,39 @@ import { guests } from "./data-guests";
 //   breakfastPrice: 15,
 // };
 
-async function deleteGuests() {
+async function deleteGuests ()
+{
   const { error } = await supabase.from("guests").delete().gt("id", 0);
   if (error) console.log(error.message);
 }
 
-async function deleteCabins() {
+async function deleteCabins ()
+{
   const { error } = await supabase.from("cabins").delete().gt("id", 0);
   if (error) console.log(error.message);
 }
 
-async function deleteBookings() {
+async function deleteBookings ()
+{
   const { error } = await supabase.from("bookings").delete().gt("id", 0);
   if (error) console.log(error.message);
 }
 
-async function createGuests() {
+async function createGuests ()
+{
   const { error } = await supabase.from("guests").insert(guests);
   if (error) console.log(error.message);
 }
 
-async function createCabins() {
+async function createCabins ()
+{
   const { error } = await supabase.from("cabins").insert(cabins);
   if (error) console.log(error.message);
 }
 
-async function createBookings() {
-  // Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each object, it will calculate them on its own. So it might be different for different people, especially after multiple uploads. Therefore, we need to first get all guestIds and cabinIds, and then replace the original IDs in the booking data with the actual ones from the DB
+async function createBookings ()
+{
+  // Для бронирования требуется идентификатор гостя и номера домика. Мы не можем указать идентификаторы Supabase для каждого объекта, они будут рассчитываться самостоятельно. Поэтому у разных людей они могут отличаться, особенно после нескольких загрузок. Поэтому нам нужно сначала получить все идентификаторы гостей и кабинеты, а затем заменить исходные идентификаторы в данных бронирования на фактические из базы данных
   const { data: guestsIds } = await supabase
     .from("guests")
     .select("id")
@@ -53,7 +59,8 @@ async function createBookings() {
     .order("id");
   const allCabinIds = cabinsIds.map((cabin) => cabin.id);
 
-  const finalBookings = bookings.map((booking) => {
+  const finalBookings = bookings.map((booking) =>
+  {
     // Here relying on the order of cabins, as they don't have and ID yet
     const cabin = cabins.at(booking.cabinId - 1);
     const numNights = subtractDates(booking.endDate, booking.startDate);
@@ -100,10 +107,12 @@ async function createBookings() {
   if (error) console.log(error.message);
 }
 
-function Uploader() {
+function Uploader ()
+{
   const [isLoading, setIsLoading] = useState(false);
 
-  async function uploadAll() {
+  async function uploadAll ()
+  {
     setIsLoading(true);
     // Bookings need to be deleted FIRST
     await deleteBookings();
@@ -118,7 +127,8 @@ function Uploader() {
     setIsLoading(false);
   }
 
-  async function uploadBookings() {
+  async function uploadBookings ()
+  {
     setIsLoading(true);
     await deleteBookings();
     await createBookings();

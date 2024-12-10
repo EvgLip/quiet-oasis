@@ -8,8 +8,9 @@ import Input from "../../ui/Input";
 
 import { useUser } from "./useUser";
 
-function UpdateUserDataForm() {
-  // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
+function UpdateUserDataForm ()
+{
+  // Нам не нужно состояние загрузки, и мы можем сразу же использовать пользовательские данные, потому что мы знаем, что они уже были загружены на данный момент
   const {
     user: {
       email,
@@ -20,7 +21,8 @@ function UpdateUserDataForm() {
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
 
-  function handleSubmit(e) {
+  function handleSubmit (e)
+  {
     e.preventDefault();
   }
 

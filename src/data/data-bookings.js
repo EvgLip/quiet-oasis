@@ -1,6 +1,7 @@
 import { add } from 'date-fns';
 
-function fromToday(numDays, withTime = false) {
+function fromToday (numDays, withTime = false)
+{
   const date = add(new Date(), { days: numDays });
   if (!withTime) date.setUTCHours(0, 0, 0, 0);
   return date.toISOString().slice(0, -1);
@@ -16,7 +17,7 @@ export const bookings = [
     guestId: 2,
     hasBreakfast: true,
     observations:
-      'I have a gluten allergy and would like to request a gluten-free breakfast.',
+      'У меня аллергия на глютен, и я хотел бы заказать завтрак без глютена.',
     isPaid: false,
     numGuests: 1,
   },
@@ -97,7 +98,7 @@ export const bookings = [
     cabinId: 3,
     guestId: 9,
     hasBreakfast: false,
-    observations: 'We will be bringing our small dog with us',
+    observations: 'Мы возьмем с собой нашу маленькую собачку',
     isPaid: true,
     numGuests: 3,
   },
@@ -192,7 +193,7 @@ export const bookings = [
     guestId: 17,
     hasBreakfast: false,
     observations:
-      "We will be checking in late, around midnight. Hope that's okay :)",
+      'Мы заедем поздно, около полуночи. Надеюсь, вы не против :)',
     isPaid: true,
     numGuests: 6,
   },
@@ -203,7 +204,7 @@ export const bookings = [
     cabinId: 6,
     guestId: 18,
     hasBreakfast: true,
-    observations: 'I will need a rollaway bed for one of the guests',
+    observations: 'Мне понадобится раскладная кровать для одного из гостей',
     isPaid: true,
     numGuests: 4,
   },
@@ -263,7 +264,7 @@ export const bookings = [
     guestId: 1,
     hasBreakfast: true,
     observations:
-      'My wife has a gluten allergy so I would like to request a gluten-free breakfast if possible',
+      'У моей жены аллергия на глютен, поэтому я хотел бы заказать завтрак без глютена, если это возможно',
     isPaid: true,
     numGuests: 9,
   },
@@ -275,7 +276,7 @@ export const bookings = [
     guestId: 23,
     hasBreakfast: true,
     observations:
-      'I am celebrating my anniversary, can you arrange for any special amenities or decorations?',
+      'Я отмечаю свою годовщину, не могли бы вы организовать какие-нибудь особые удобства или украшения?',
     isPaid: true,
     numGuests: 10,
   },

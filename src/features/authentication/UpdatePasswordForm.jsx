@@ -6,13 +6,15 @@ import Input from "../../ui/Input";
 
 import { useUpdateUser } from "./useUpdateUser";
 
-function UpdatePasswordForm() {
+function UpdatePasswordForm ()
+{
   const { register, handleSubmit, formState, getValues, reset } = useForm();
   const { errors } = formState;
 
   const { updateUser, isUpdating } = useUpdateUser();
 
-  function onSubmit({ password }) {
+  function onSubmit ({ password })
+  {
     updateUser({ password }, { onSuccess: reset });
   }
 
