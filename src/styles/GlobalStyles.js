@@ -1,21 +1,6 @@
-/*
-подключение шрифтов в index.html
-аналог для Popponst с поддержкой кирилицы -это Montserrat или Open Sans
-на замену Sono - M PLUS Rounded 1c, Sofia Sans
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-  rel="stylesheet"
-/>
-<link
-  href="https://fonts.googleapis.com/css2?family=Sono:wght@400;500;600&display=swap"
-  rel="stylesheet"
-/>
-*/
+import { createGlobalStyle } from "styled-components";
 
-/* Colors adapted from https://tailwindcss.com/docs/customizing-colors */
-
+const GlobalStales = createGlobalStyle`
 :root {
   /* Indigo */
   --color-brand-50: #eef2ff;
@@ -66,7 +51,7 @@
   --border-radius-md: 7px;
   --border-radius-lg: 9px;
 
-  /* For dark mode */
+  /* Для темног режима */
   --image-grayscale: 0;
   --image-opacity: 100%;
 }
@@ -78,7 +63,7 @@
   padding: 0;
   margin: 0;
 
-  /* Creating animations for dark mode */
+  /* Создание анимации для темной режима */
   transition: background-color 0.3s, border 0.3s;
 }
 
@@ -87,7 +72,7 @@ html {
 }
 
 body {
-  font-family: "Poppins", sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: var(--color-grey-700);
 
   transition: color 0.3s, background-color 0.3s;
@@ -159,7 +144,7 @@ img {
 }
 
 /*
-FOR DARK MODE
+ДЛЯ ТЕМНОГО РЕЖИМА
 
 --color-grey-0: #18212f;
 --color-grey-50: #111827;
@@ -197,3 +182,7 @@ FOR DARK MODE
 --image-grayscale: 10%;
 --image-opacity: 90%;
 */
+`;
+
+
+export default GlobalStales;
