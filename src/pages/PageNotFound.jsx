@@ -27,14 +27,15 @@ const Box = styled.div`
   }
 `;
 
-function PageNotFound() {
+function PageNotFound ()
+{
   const moveBack = useMoveBack();
 
   return (
     <StyledPageNotFound>
       <Box>
         <Heading as="h1">
-          The page you are looking for could not be found 😢
+          Страница, которую вы ищете, не cуществует 😢
         </Heading>
         <button onClick={moveBack} size="large">
           &larr; Go back
