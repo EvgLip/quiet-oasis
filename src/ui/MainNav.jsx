@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+import { HiOutlineCalendarDays, HiOutlineCog6Tooth, HiOutlineHome, HiOutlineHomeModern, HiOutlineUsers } from "react-icons/hi2";
 import styled from "styled-components";
 
 const NavList = styled.ul`
@@ -6,7 +8,7 @@ const NavList = styled.ul`
   gap: 0.8rem;
 `;
 
-const Link = styled.a`
+const StyledNavLink = styled(NavLink)`
   &:link,
   &:visited {
     display: flex;
@@ -20,7 +22,8 @@ const Link = styled.a`
     transition: all 0.3s;
   }
 
-  /* This works because react-router places the active class on the active NavLink */
+  // Это работает, потому что react-router помещает активный класс 
+  // в активную навигационную ссылку 
   &:hover,
   &:active,
   &.active:link,
@@ -44,3 +47,60 @@ const Link = styled.a`
     color: var(--color-brand-600);
   }
 `;
+
+function MainNav ()
+{
+
+  return (
+    <nav>
+      <NavList>
+        <li>
+          <StyledNavLink to="/dashboard">
+            <HiOutlineHome />
+            <span>
+              Домашняя
+            </span>
+          </StyledNavLink>
+        </li>
+
+        <li>
+          <StyledNavLink to="/bookings">
+            <HiOutlineCalendarDays />
+            <span>
+              Бронирование
+            </span>
+          </StyledNavLink>
+        </li>
+
+        <li>
+          <StyledNavLink to="/cabins">
+            <HiOutlineHomeModern />
+            <span>
+              Коттеджи
+            </span>
+          </StyledNavLink>
+        </li>
+
+        <li>
+          <StyledNavLink to="/users">
+            <HiOutlineUsers />
+            <span>
+              Персонал
+            </span>
+          </StyledNavLink>
+        </li>
+
+        <li>
+          <StyledNavLink to="/settings">
+            <HiOutlineCog6Tooth />
+            <span>
+              Настройки
+            </span>
+          </StyledNavLink>
+        </li>
+      </NavList>
+    </nav>
+  );
+}
+
+export default MainNav;
