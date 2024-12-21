@@ -1,39 +1,45 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBooking(id) {
+export async function getBooking (id)
+{
   const { data, error } = await supabase
     .from("bookings")
     .select("*, cabins(*), guests(*)")
     .eq("id", id)
     .single();
 
-  if (error) {
+  if (error)
+  {
     console.error(error);
-    throw new Error("Booking not found");
+    throw new Error("Сведения о бронировании не найдены.");
   }
 
   return data;
 }
 
-// Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
-export async function getBookingsAfterDate(date) {
+// Возвращает все БРОНИРОВАНИЯ, созданные после указанной даты. 
+// Полезно, например, для получения данных о бронированиях, созданных за последние 30 дней.
+export async function getBookingsAfterDate (date)
+{
   const { data, error } = await supabase
     .from("bookings")
     .select("created_at, totalPrice, extrasPrice")
     .gte("created_at", date)
     .lte("created_at", getToday({ end: true }));
 
-  if (error) {
+  if (error)
+  {
     console.error(error);
-    throw new Error("Bookings could not get loaded");
+    throw new Error("Не удалось загрузить сведения о бронировании.");
   }
 
   return data;
 }
 
-// Returns all STAYS that are were created after the given date
-export async function getStaysAfterDate(date) {
+// Возвращает все записи, которые были созданы после указанной даты
+export async function getStaysAfterDate (date)
+{
   const { data, error } = await supabase
     .from("bookings")
     // .select('*')
@@ -41,16 +47,18 @@ export async function getStaysAfterDate(date) {
     .gte("startDate", date)
     .lte("startDate", getToday());
 
-  if (error) {
+  if (error)
+  {
     console.error(error);
-    throw new Error("Bookings could not get loaded");
+    throw new Error("Не удалось загрузить сведения о бронировании.");
   }
 
   return data;
 }
 
 // Activity means that there is a check in or a check out today
-export async function getStaysTodayActivity() {
+export async function getStaysTodayActivity ()
+{
   const { data, error } = await supabase
     .from("bookings")
     .select("*, guests(fullName, nationality, countryFlag)")
@@ -59,18 +67,20 @@ export async function getStaysTodayActivity() {
     )
     .order("created_at");
 
-  // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
+  // Эквивалентно этому. Но, запрашивая это, мы загружаем только те данные, которые нам действительно нужны, иначе нам потребовались бы все когда-либо созданные бронирования
   // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
   // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
 
-  if (error) {
+  if (error)
+  {
     console.error(error);
-    throw new Error("Bookings could not get loaded");
+    throw new Error("Не удалось загрузить сведения о бронировании.");
   }
   return data;
 }
 
-export async function updateBooking(id, obj) {
+export async function updateBooking (id, obj)
+{
   const { data, error } = await supabase
     .from("bookings")
     .update(obj)
@@ -78,20 +88,23 @@ export async function updateBooking(id, obj) {
     .select()
     .single();
 
-  if (error) {
+  if (error)
+  {
     console.error(error);
-    throw new Error("Booking could not be updated");
+    throw new Error("Не удалось обновить данные по брони.");
   }
   return data;
 }
 
-export async function deleteBooking(id) {
+export async function deleteBooking (id)
+{
   // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
-  if (error) {
+  if (error)
+  {
     console.error(error);
-    throw new Error("Booking could not be deleted");
+    throw new Error("Не удалось удалить бронь.");
   }
   return data;
 }
