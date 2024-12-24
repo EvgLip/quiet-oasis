@@ -1,10 +1,14 @@
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import styled from "styled-components";
+import toast from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
+import { createCabin } from "../../services/apiCabins";
 
 const FormRow = styled.div`
   display: grid;
@@ -42,32 +46,114 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function CreateCabinForm() {
+function CreateCabinForm ()
+{
+  const { register, handleSubmit, reset, getValues, formState } = useForm();
+  const { errors } = formState;
+
+  const queryClient = useQueryClient();
+  const { isLoading: isCreating, mutate } = useMutation(
+    {
+      mutationFn: createCabin,
+      onSuccess: () => 
+      {
+        queryClient.invalidateQueries({ queryKey: ['cabins'] });
+        toast.success('Запись успешно добавлена.');
+        reset();
+      },
+      onError: (err) => toast.error(err.message) //ошибка генерируется в apiCabins
+    }
+  );
+
+  function onSubmit (data)
+  {
+    mutate(data);
+  }
+
+  function onError (errors)
+  {
+    console.log(errors);
+  }
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit(onSubmit, onError)}>
       <FormRow>
-        <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" />
+        <Label htmlFor="name">Наименование коттеджа</Label>
+        <Input type="text" id="name"
+          {
+          ...register('name',
+            {
+              required: 'Обязательное поле.',
+            }
+
+          )}
+        />
+        {errors?.name?.message && <Error>{errors.name.message}</Error>}
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" />
+        <Label htmlFor="maxCapacity">Вместимость</Label>
+        <Input type="number" id="maxCapacity"
+          {
+          ...register('maxCapacity',
+            {
+              required: 'Обязательное поле.',
+              min: {
+                value: 1,
+                message: 'Вместимость не может быть менее 1 человека.',
+              }
+            }
+
+          )}
+        />
+        {errors?.maxCapacity?.message && <Error>{errors.maxCapacity.message}</Error>}
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" />
+        <Label htmlFor="regularPrice">Цена</Label>
+        <Input type="number" id="regularPrice"
+          {
+          ...register('regularPrice',
+            {
+              required: 'Обязательное поле.',
+              min: {
+                value: 5000,
+                message: 'Цена не может быть менее 5000 руб.',
+              }
+            }
+
+          )}
+        />
+        {errors?.regularPrice?.message && <Error>{errors.regularPrice.message}</Error>}
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="discount">Discount</Label>
-        <Input type="number" id="discount" defaultValue={0} />
+        <Label htmlFor="discount">Скидка</Label>
+        <Input type="number" id="discount" defaultValue={0}
+          {
+          ...register('discount',
+            {
+              required: 'Обязательное поле.',
+              validate: (value) => value <= getValues().regularPrice / 10 || 'Скидка не может быть более 10% от цены.'
+            }
+
+          )}
+        />
+        {errors?.discount?.message && <Error>{errors.discount.message}</Error>}
       </FormRow>
 
       <FormRow>
-        <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" defaultValue="" />
+        <Label htmlFor="description">Описание</Label>
+        <Textarea type="number" id="description" defaultValue=""
+          {
+          ...register('description',
+            {
+              required: 'Обязательное поле.',
+            }
+
+          )}
+        />
+        {errors?.description?.message && <Error>{errors.description.message}</Error>}
       </FormRow>
 
       <FormRow>
@@ -76,11 +162,11 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow>
-        {/* type is an HTML attribute! */}
+        {/*type - это атрибут HTML!*/}
         <Button variation="secondary" type="reset">
-          Cancel
+          Очистить
         </Button>
-        <Button>Edit cabin</Button>
+        <Button disabled={isCreating}>Сохранить</Button>
       </FormRow>
     </Form>
   );

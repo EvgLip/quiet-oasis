@@ -14,3 +14,32 @@ export async function getCabins ()
 
   return data;
 }
+
+export async function createCabin (newCabinData)
+{
+
+  const { data, error } = await supabase
+    .from('cabins')
+    .insert([newCabinData]);
+
+  if (error)
+  {
+    console.log(error);
+    throw new Error('Невозможно добавить запись.');
+  }
+}
+
+export async function deleteCabin (id)
+{
+
+  const { error } = await supabase
+    .from('cabins')
+    .delete()
+    .eq('id', id);
+
+  if (error)
+  {
+    console.log(error);
+    throw new Error('Невозможно удалить запись.');
+  }
+}
