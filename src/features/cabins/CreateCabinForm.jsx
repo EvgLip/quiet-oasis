@@ -30,7 +30,11 @@ function CreateCabinForm ()
     }
   );
 
-  function onSubmit (data) { mutate(data); }
+  function onSubmit (data)
+  {
+    console.log(data);
+    mutate({ ...data, image: data.image[0] });
+  }
 
   function onError (errors) { console.log(errors); }
 
@@ -44,7 +48,6 @@ function CreateCabinForm ()
             {
               required: 'Обязательное поле.',
             }
-
           )}
         />
       </FormRow>
@@ -60,7 +63,6 @@ function CreateCabinForm ()
                 message: 'Вместимость не может быть менее 1 человека.',
               }
             }
-
           )}
         />
       </FormRow>
@@ -76,7 +78,6 @@ function CreateCabinForm ()
                 message: 'Цена не может быть менее 5000 руб.',
               }
             }
-
           )}
         />
       </FormRow>
@@ -89,7 +90,6 @@ function CreateCabinForm ()
               required: 'Обязательное поле.',
               validate: (value) => value <= getValues().regularPrice / 10 || 'Скидка не может быть более 10% от цены.'
             }
-
           )}
         />
       </FormRow>
@@ -101,13 +101,19 @@ function CreateCabinForm ()
             {
               required: 'Обязательное поле.',
             }
-
           )}
         />
       </FormRow>
 
       <FormRow label='Фото коттеджа'>
-        <FileInput id="image" accept="image/*" />
+        <FileInput id="image" accept="image/*"
+          {
+          ...register('image',
+            {
+              required: 'Обязательное поле.',
+            }
+          )}
+        />
       </FormRow>
 
       <FormRow>
