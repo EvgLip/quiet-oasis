@@ -7,60 +7,33 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createEditCabin } from "../../services/apiCabins";
+import { createCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
 
 
-function CreateCabinForm ({ cabinToEdit = {} })
+function CreateCabinForm ()
 {
-  const { id: editId, ...editValue } = cabinToEdit; // из <CabinRow/>
-  const isEditSession = Boolean(editId); //сеанс обновления записи в БД
-
-  const { register, handleSubmit, reset, getValues, formState } = useForm(
-    { defaultValues: isEditSession ? editValue : {} }
-  );
+  const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
 
   const queryClient = useQueryClient();
-  //для создания нового коттеджа
-  const { isLoading: isCreating, mutate: createCabin } = useMutation(
+  const { isLoading: isCreating, mutate } = useMutation(
     {
-      mutationFn: createEditCabin,
+      mutationFn: createCabin,
       onSuccess: () => 
       {
         queryClient.invalidateQueries({ queryKey: ['cabins'] });
-        toast.success('Создана запись о новом коттедже.');
+        toast.success('Запись успешно добавлена.');
         reset();
       },
       onError: (err) => toast.error(err.message) //ошибка генерируется в apiCabins
     }
   );
-  //для изменения данный по коттеджу
-  const { isLoading: isEditing, mutate: editCabin } = useMutation(
-    {
-      mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
-      onSuccess: () => 
-      {
-        queryClient.invalidateQueries({ queryKey: ['cabins'] });
-        toast.success(`Данные о коттедже ${editValue.name} обновлены.`);
-        reset();
-      },
-      onError: (err) => toast.error(err.message) //ошибка генерируется в apiCabins
-    }
-  );
-
-  const isWorking = isCreating || isEditing;
 
   function onSubmit (data)
   {
-    console.log('startData ', data);
-
-    const image = typeof data.image === 'string' ? data.image : data.image[0];
-
-    if (isEditSession) editCabin({ newCabinData: { ...data, image }, id: editId });
-    else createCabin({ ...data, image: image });
-
-    console.log('finishData ', data);
+    console.log(data);
+    mutate({ ...data, image: data.image[0] });
   }
 
   function onError (errors) { console.log(errors); }
@@ -69,22 +42,22 @@ function CreateCabinForm ({ cabinToEdit = {} })
     <Form onSubmit={handleSubmit(onSubmit, onError)}>
 
       <FormRow label='Наименование коттеджа' error={errors?.name?.message}>
-        <Input type="text" id="name" disabled={isWorking}
+        <Input type="text" id="name" disabled={isCreating}
           {
           ...register('name',
             {
-              required: 'Не указано имя коттеджа.',
+              required: 'Обязательное поле.',
             }
           )}
         />
       </FormRow>
 
       <FormRow label='Вместимость' error={errors?.maxCapacity?.message}>
-        <Input type="number" id="maxCapacity" disabled={isWorking}
+        <Input type="number" id="maxCapacity" disabled={isCreating}
           {
           ...register('maxCapacity',
             {
-              required: 'Не указано на сколько человек расчитан коттедж.',
+              required: 'Обязательное поле.',
               min: {
                 value: 1,
                 message: 'Вместимость не может быть менее 1 человека.',
@@ -95,11 +68,11 @@ function CreateCabinForm ({ cabinToEdit = {} })
       </FormRow>
 
       <FormRow label='Цена' error={errors?.regularPrice?.message}>
-        <Input type="number" id="regularPrice" disabled={isWorking}
+        <Input type="number" id="regularPrice" disabled={isCreating}
           {
           ...register('regularPrice',
             {
-              required: 'Не указана цена.',
+              required: 'Обязательное поле.',
               min: {
                 value: 5000,
                 message: 'Цена не может быть менее 5000 руб.',
@@ -110,11 +83,11 @@ function CreateCabinForm ({ cabinToEdit = {} })
       </FormRow>
 
       <FormRow label='Скидка' error={errors?.discount?.message}>
-        <Input type="number" id="discount" defaultValue={0} disabled={isWorking}
+        <Input type="number" id="discount" defaultValue={0} disabled={isCreating}
           {
           ...register('discount',
             {
-              required: 'Не указана возможная скидка.',
+              required: 'Обязательное поле.',
               validate: (value) => value <= getValues().regularPrice / 10 || 'Скидка не может быть более 10% от цены.'
             }
           )}
@@ -122,11 +95,11 @@ function CreateCabinForm ({ cabinToEdit = {} })
       </FormRow>
 
       <FormRow label='Описание' error={errors?.description?.message}>
-        <Textarea type="number" id="description" defaultValue="" disabled={isWorking}
+        <Textarea type="number" id="description" defaultValue="" disabled={isCreating}
           {
           ...register('description',
             {
-              required: 'Нет описания коттеджа.',
+              required: 'Обязательное поле.',
             }
           )}
         />
@@ -137,7 +110,7 @@ function CreateCabinForm ({ cabinToEdit = {} })
           {
           ...register('image',
             {
-              required: isEditSession ? false : 'Необходимо выбрать изображение.',
+              required: 'Обязательное поле.',
             }
           )}
         />
@@ -148,7 +121,7 @@ function CreateCabinForm ({ cabinToEdit = {} })
         <Button variation="secondary" type="reset">
           Очистить
         </Button>
-        <Button disabled={isWorking}>Сохранить</Button>
+        <Button disabled={isCreating}>Сохранить</Button>
       </FormRow>
     </Form>
   );
