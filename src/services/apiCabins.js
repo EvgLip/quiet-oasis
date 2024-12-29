@@ -8,13 +8,13 @@ export async function getCabins ()
 
   if (error)
   {
-    console.log(error);
+    console.log('log ошибки из supabase-> ', error);
     throw new Error('Не удалось получить сведения по коттеджам из БД.');
   }
 
   return data;
 }
-
+///////////////////////////////////////////////////////////
 export async function createEditCabin (cabinData, editId)
 {
   const hasImagePath = cabinData.image?.startsWith?.(supabaseUrl);
@@ -23,28 +23,24 @@ export async function createEditCabin (cabinData, editId)
 
   //в БД хранится путь к изображению
   const imageName = `${Math.random().toString().replaceAll('0.', '')}-${cabinData.image.name}`.replaceAll('/', '');
-  //если в imagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактироване записи с сохранением старого изображения), иначе формируем путь для нового файла
+  //если в imagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактироване записи с сохранением старого изображения), иначе формируем путь для нового файла изображения
   const imagePath = hasImagePath ? cabinData.image : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
-
-  console.log('imagePath - ', imagePath);
 
   //1.создаем/редактируем запись в БД - вызов из <CreateCabinForm/>
   let query = supabase.from('cabins');
 
   //a) СОЗДАЕМ
-  if (!editId) query.insert([{ ...cabinData, image: imagePath }]);
+  if (!editId) query = query.insert({ ...cabinData, image: imagePath });
 
   //б)РЕДАКТИРУЕМ
   if (editId) query = query.update(cabinData)
     .eq('id', editId);
 
-  const { data, error } = await query.select();//.single();
-
-  console.log('данные после create ', data);
+  const { data, error } = await query.select(); //.single();
 
   if (error)
   {
-    console.log(error);
+    console.log('log ошибки из supabase-> ', error);
     throw new Error('Невозможно добавить новую запись БД.');
   }
 
@@ -64,7 +60,7 @@ export async function createEditCabin (cabinData, editId)
 
   return data;
 }
-
+///////////////////////////////////////////////////////////
 export async function deleteCabin (id)
 {
 

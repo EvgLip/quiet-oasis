@@ -1,14 +1,13 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createEditCabin } from "../../services/apiCabins";
 import FormRow from "../../ui/FormRow";
+import useCreateCabin from "./useCreateCabin";
+import useEditCabin from "./useEditCabin";
 
 
 function CreateCabinForm ({ cabinToEdit = {} })
@@ -21,46 +20,28 @@ function CreateCabinForm ({ cabinToEdit = {} })
   );
   const { errors } = formState;
 
-  const queryClient = useQueryClient();
-  //для создания нового коттеджа
-  const { isLoading: isCreating, mutate: createCabin } = useMutation(
-    {
-      mutationFn: createEditCabin,
-      onSuccess: () => 
-      {
-        queryClient.invalidateQueries({ queryKey: ['cabins'] });
-        toast.success('Создана запись о новом коттедже.');
-        reset();
-      },
-      onError: (err) => toast.error(err.message) //ошибка генерируется в apiCabins
-    }
-  );
-  //для изменения данный по коттеджу
-  const { isLoading: isEditing, mutate: editCabin } = useMutation(
-    {
-      mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
-      onSuccess: () => 
-      {
-        queryClient.invalidateQueries({ queryKey: ['cabins'] });
-        toast.success(`Данные о коттедже ${editValue.name} обновлены.`);
-        reset();
-      },
-      onError: (err) => toast.error(err.message) //ошибка генерируется в apiCabins
-    }
-  );
-
+  const { isCreating, createCabin } = useCreateCabin();
+  const { isEditing, editCabin } = useEditCabin();
   const isWorking = isCreating || isEditing;
 
   function onSubmit (data)
   {
-    console.log('startData ', data);
-
     const image = typeof data.image === 'string' ? data.image : data.image[0];
 
-    if (isEditSession) editCabin({ newCabinData: { ...data, image }, id: editId });
-    else createCabin({ ...data, image: image });
-
-    console.log('finishData ', data);
+    if (isEditSession) editCabin(
+      { newCabinData: { ...data, image }, id: editId }, //data - данные формы подготовленные для update в БД
+      {
+        //data - возвращенные из БД после успешной обновления данных
+        onSuccess: () => reset()
+      }
+    );
+    else createCabin(
+      { ...data, image: image }, //data - данные формы подготовленные для записи в БД
+      {
+        //data - возвращенные из БД после успешной записи данных, содержит id новой записи
+        onSuccess: () => reset()
+      }
+    );
   }
 
   function onError (errors) { console.log(errors); }
