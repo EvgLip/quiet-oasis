@@ -42,7 +42,7 @@ function CabinTable ()
         <div>Вместимость</div>
         <div>Цена</div>
         <div>Скидка</div>
-        <div>Действие</div>
+        <div>Действия</div>
       </TableHeader>
 
       {

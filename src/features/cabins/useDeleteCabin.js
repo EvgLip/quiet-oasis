@@ -8,7 +8,7 @@ export default function useDeleteCabin ()
   const { isLoading: isDeleting, mutate: deleteCabin } = useMutation(
     {
       // mutationFn: (id) => deleteCabin(id),
-      mutationFn: deleteCabinApi,
+      mutationFn: ({ cabinId, imagePath }) => deleteCabinApi(cabinId, imagePath),
       onSuccess: () =>
       {
         queryClient.invalidateQueries(

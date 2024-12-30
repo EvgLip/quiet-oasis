@@ -1,9 +1,11 @@
-import styled from "styled-components";
 import { useState } from "react";
+import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import styled from "styled-components";
 
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "./CreateCabinForm";
 import useDeleteCabin from "./useDeleteCabin";
+import useCreateCabin from "./useCreateCabin";
 
 const TableRow = styled.div`
   display: grid;
@@ -45,28 +47,46 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
+const Actions = styled.div`
+  display: flex;
+  gap: 10px;
+`;
 //eslint-disable-next-line
 function CabinRow ({ cabin })
 {
   const [showForm, setShowForm] = useState(false);
   const { isDeleting, deleteCabin } = useDeleteCabin();
+  const { isCreating, createCabin } = useCreateCabin();
 
-  const { id: cabinId, name, maxCapacity, regularPrice, discount, image } = cabin;
+  const { id: cabinId, name, maxCapacity, regularPrice, discount, description, image: imagePath } = cabin;
+
+  function handleDuplicate ()
+  {
+    createCabin(
+      {
+        name: `Копия - ${name}`,
+        maxCapacity,
+        regularPrice,
+        discount,
+        description,
+        image: imagePath,
+      }
+    );
+  }
 
   return (
     <>
       <TableRow role="row">
-        <Img src={image} />
+        <Img src={imagePath} />
         <Cabin>{name}</Cabin>
         <div>для {maxCapacity} чел</div>
         <Price>{formatCurrency(regularPrice)}</Price>
         {discount ? <Discount>{formatCurrency(discount)}</Discount> : <span>&mdash;</span>}
-        <div>
-          <button onClick={() => setShowForm(show => !show)}>Изменить</button>
-          <button onClick={() => deleteCabin(cabinId)} disabled={isDeleting}>
-            удалить
-          </button>
-        </div>
+        <Actions>
+          <button onClick={handleDuplicate} disabled={isCreating}><HiSquare2Stack /></button>
+          <button onClick={() => setShowForm(show => !show)}><HiPencil /></button>
+          <button onClick={() => deleteCabin({ cabinId, imagePath })} disabled={isDeleting}><HiTrash /></button>
+        </Actions>
       </TableRow>
       {showForm && <CreateCabinForm cabinToEdit={cabin} />}
     </>

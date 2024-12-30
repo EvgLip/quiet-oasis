@@ -13,7 +13,7 @@ export default function useEditCabin ()
       mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
       onSuccess: (data) => 
       {
-        console.log('test ', data);
+        console.log('данные после update ', data);
         queryClient.invalidateQueries({ queryKey: ['cabins'] });
         toast.success(`Данные о коттедже ${data[0].name} обновлены.`);
       },

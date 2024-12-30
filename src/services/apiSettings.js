@@ -7,7 +7,7 @@ export async function getSettings ()
   if (error)
   {
     console.error(error);
-    throw new Error("Settings could not be loaded");
+    throw new Error("Не удалось загрузить настройки");
   }
   return data;
 }

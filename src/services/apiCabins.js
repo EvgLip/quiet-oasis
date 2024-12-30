@@ -17,34 +17,42 @@ export async function getCabins ()
 ///////////////////////////////////////////////////////////
 export async function createEditCabin (cabinData, editId)
 {
-  const hasImagePath = cabinData.image?.startsWith?.(supabaseUrl);
   //путь к storage в БД
   //https://ensdctanfssdtelodftl.supabase.co/storage/v1/object/public/cabin-images/name.jpg
+  const hasImagePath = typeof cabinData.image === 'string' ? cabinData.image?.startsWith?.(supabaseUrl) : false;
 
   //в БД хранится путь к изображению
-  const imageName = `${Math.random().toString().replaceAll('0.', '')}-${cabinData.image.name}`.replaceAll('/', '');
+  const imageName = cabinData.image.name ? `${Math.random().toString().replaceAll('0.', '')}-${cabinData.image.name}`.replaceAll('/', '') : undefined;
   //если в imagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактироване записи с сохранением старого изображения), иначе формируем путь для нового файла изображения
   const imagePath = hasImagePath ? cabinData.image : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
-  //1.создаем/редактируем запись в БД - вызов из <CreateCabinForm/>
+  //1.создаем/редактируем запись в БД 
   let query = supabase.from('cabins');
 
   //a) СОЗДАЕМ
   if (!editId) query = query.insert({ ...cabinData, image: imagePath });
 
   //б)РЕДАКТИРУЕМ
-  if (editId) query = query.update(cabinData)
-    .eq('id', editId);
+  if (editId)
+  {
+    //файл изображения остается старым
+    if (hasImagePath) query = query.update(cabinData).eq('id', editId);
+    //изменение всех полей таблицы БД cabins, добавляется ссылка на новый файл изображения
+    else query = query.update({ ...cabinData, image: imagePath }).eq('id', editId);
+  }
 
   const { data, error } = await query.select(); //.single();
 
   if (error)
   {
     console.log('log ошибки из supabase-> ', error);
-    throw new Error('Невозможно добавить новую запись БД.');
+    throw new Error('Не удалось добавить новую запись в БД.');
   }
 
-  //2.если запись создана успешно, загружаем файл изображения в storage БД
+  //2.если запись создана/отредактирована успешно, загружаем файл изображения в storage БД
+  //кроме случая, когда файл изображения не меняется
+  if (hasImagePath) return data;
+
   const { error: storageError } = await supabase
     .storage
     .from('cabin-images')
@@ -53,25 +61,34 @@ export async function createEditCabin (cabinData, editId)
   //3.если произошла ошибка при загрузке файла-изображения в cabin-storage, то удаляем всю запись из БД, которая была создана на шаге 1
   if (storageError)
   {
-    await supabase.from('cabins').delete().eq('id', data.id);
+    //await supabase.from('cabins').delete().eq('id', data.id);
     console.log(storageError);
-    throw new Error('Изображение коттеджа не было загружено и запись в БД не была создана.');
+    throw new Error('Не удалось добавить файл изображения в БД.');
   }
 
   return data;
 }
 ///////////////////////////////////////////////////////////
-export async function deleteCabin (id)
+export async function deleteCabin (id, imagePath)
 {
-
-  const { error } = await supabase
+  //удаление записи из таблицы
+  const { error: errBD } = await supabase
     .from('cabins')
     .delete()
     .eq('id', id);
 
-  if (error)
+  if (errBD)
   {
-    console.log(error);
+    console.log(errBD);
     throw new Error('Невозможно удалить запись из БД.');
+  }
+  //удаление файла изображения из storage
+  const fileName = imagePath.split('/').pop();
+  const { error: errBucket } = await supabase.storage.from('cabin-images').remove([fileName]);
+
+  if (errBucket)
+  {
+    console.log(errBucket);
+    throw new Error('Невозможно удалить файл изображения из БД.');
   }
 }
