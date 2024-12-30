@@ -94,7 +94,7 @@ function MainNav ()
           <StyledNavLink to="/settings">
             <HiOutlineCog6Tooth />
             <span>
-              Настройки
+              Политики
             </span>
           </StyledNavLink>
         </li>

@@ -19,15 +19,14 @@ export async function updateSetting (newSetting)
   const { data, error } = await supabase
     .from("settings")
     .update(newSetting)
-    // Существует только одна строка настроек, и она имеет идентификатор=1, 
-    // так что это обновленная строка
+    // в таблице настроек только одна запись под id=1
     .eq("id", 1)
     .single();
 
   if (error)
   {
     console.error(error);
-    throw new Error("Settings could not be updated");
+    throw new Error("Не удалось обновить настройки");
   }
   return data;
 }

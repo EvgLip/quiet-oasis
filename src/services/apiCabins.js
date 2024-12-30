@@ -15,7 +15,7 @@ export async function getCabins ()
   return data;
 }
 ///////////////////////////////////////////////////////////
-export async function createEditCabin (cabinData, editId)
+export async function createUpdateCabin (cabinData, updateId)
 {
   //путь к storage в БД
   //https://ensdctanfssdtelodftl.supabase.co/storage/v1/object/public/cabin-images/name.jpg
@@ -30,15 +30,15 @@ export async function createEditCabin (cabinData, editId)
   let query = supabase.from('cabins');
 
   //a) СОЗДАЕМ
-  if (!editId) query = query.insert({ ...cabinData, image: imagePath });
+  if (!updateId) query = query.insert({ ...cabinData, image: imagePath });
 
   //б)РЕДАКТИРУЕМ
-  if (editId)
+  if (updateId)
   {
     //файл изображения остается старым
-    if (hasImagePath) query = query.update(cabinData).eq('id', editId);
+    if (hasImagePath) query = query.update(cabinData).eq('id', updateId);
     //изменение всех полей таблицы БД cabins, добавляется ссылка на новый файл изображения
-    else query = query.update({ ...cabinData, image: imagePath }).eq('id', editId);
+    else query = query.update({ ...cabinData, image: imagePath }).eq('id', updateId);
   }
 
   const { data, error } = await query.select(); //.single();

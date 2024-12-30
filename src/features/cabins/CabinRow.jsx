@@ -88,7 +88,7 @@ function CabinRow ({ cabin })
           <button onClick={() => deleteCabin({ cabinId, imagePath })} disabled={isDeleting}><HiTrash /></button>
         </Actions>
       </TableRow>
-      {showForm && <CreateCabinForm cabinToEdit={cabin} />}
+      {showForm && <CreateCabinForm cabinToUpdate={cabin} />}
     </>
   );
 }

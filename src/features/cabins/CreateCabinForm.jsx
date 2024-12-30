@@ -7,29 +7,29 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import useCreateCabin from "./useCreateCabin";
-import useEditCabin from "./useEditCabin";
+import useUpdateCabin from "./useUpdateCabin";
 
 
-function CreateCabinForm ({ cabinToEdit = {} })
+function CreateCabinForm ({ cabinToUpdate = {} })
 {
-  const { id: editId, ...editValue } = cabinToEdit; // из <CabinRow/>
-  const isEditSession = Boolean(editId); //сеанс обновления записи в БД
+  const { id: updateId, ...updateValue } = cabinToUpdate; // из <CabinRow/>
+  const isUdateSession = Boolean(updateId); //сеанс обновления записи в БД
 
   const { register, handleSubmit, reset, getValues, formState } = useForm(
-    { defaultValues: isEditSession ? editValue : {} }
+    { defaultValues: isUdateSession ? updateValue : {} }
   );
   const { errors } = formState;
 
   const { isCreating, createCabin } = useCreateCabin();
-  const { isEditing, editCabin } = useEditCabin();
-  const isWorking = isCreating || isEditing;
+  const { isUdating, updateCabin } = useUpdateCabin();
+  const isWorking = isCreating || isUdating;
 
   function onSubmit (data)
   {
     const image = typeof data.image === 'string' ? data.image : data.image[0];
 
-    if (isEditSession) editCabin(
-      { newCabinData: { ...data, image }, id: editId }, //data - данные формы подготовленные для update в БД
+    if (isUdateSession) updateCabin(
+      { newCabinData: { ...data, image }, id: updateId }, //data - данные формы подготовленные для update в БД
       {
         //data - возвращенные из БД после успешной обновления данных
         onSuccess: () => reset()
@@ -118,7 +118,7 @@ function CreateCabinForm ({ cabinToEdit = {} })
           {
           ...register('image',
             {
-              required: isEditSession ? false : 'Необходимо выбрать изображение.',
+              required: isUdateSession ? false : 'Необходимо выбрать изображение.',
             }
           )}
         />

@@ -25,6 +25,6 @@ export const getToday = function (options = {})
 };
 
 export const formatCurrency = (value) =>
-  new Intl.NumberFormat('en', { style: 'currency', currency: 'RUB' }).format(
+  new Intl.NumberFormat('ru', { style: 'currency', currency: 'RUB' }).format(
     value
   );
