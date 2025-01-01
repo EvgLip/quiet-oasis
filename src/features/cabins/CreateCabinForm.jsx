@@ -10,7 +10,7 @@ import useCreateCabin from "./useCreateCabin";
 import useUpdateCabin from "./useUpdateCabin";
 
 //eslint-disable-next-line
-function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
+function CreateCabinForm ({ cabinToUpdate = {}, onClose })
 {
   const { id: updateId, ...updateValue } = cabinToUpdate; // из <CabinRow/>
   const isUdateSession = Boolean(updateId); //сеанс обновления записи в БД
@@ -21,10 +21,10 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
   const { errors } = formState;
 
   const { isCreating, createCabin } = useCreateCabin();
-  const { isUdating, updateCabin } = useUpdateCabin();
-  const isWorking = isCreating || isUdating;
+  const { isUpdating, updateCabin } = useUpdateCabin();
+  const isWorking = isCreating || isUpdating;
 
-  const type = closeModalMode ? 'modal' : 'regular';
+  const type = onClose ? 'modal' : 'regular';
 
   function onSubmit (data)
   {
@@ -37,7 +37,7 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
         onSuccess: () =>
         {
           reset();
-          closeModalMode?.();
+          onClose?.();
         },
       }
     );
@@ -48,7 +48,7 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
         onSuccess: () =>
         {
           reset();
-          closeModalMode?.();
+          onClose?.();
         },
       }
     );
@@ -139,8 +139,8 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
 
       <FormRow>
         {/*type - это атрибут HTML!*/}
-        <Button $variation="secondary" type="reset" onClick={closeModalMode}>
-          {type === 'modal' ? 'Закрыть' : 'Очистить'}
+        <Button $variation="secondary" type="reset" onClick={onClose} disabled={isWorking}>
+          Закрыть
         </Button>
         <Button disabled={isWorking}>Сохранить</Button>
       </FormRow>

@@ -21,10 +21,15 @@ export async function createUpdateCabin (cabinData, updateId)
   //https://ensdctanfssdtelodftl.supabase.co/storage/v1/object/public/cabin-images/name.jpg
   const hasImagePath = typeof cabinData.image === 'string' ? cabinData.image?.startsWith?.(supabaseUrl) : false;
 
-  //в БД хранится путь к изображению
+  //в таблице БД хранится путь к изображению
+  //если в cabinData файл изображения, то формируем новое имя файла, иначе undefined
   const imageName = cabinData.image.name ? `${Math.random().toString().replaceAll('0.', '')}-${cabinData.image.name}`.replaceAll('/', '') : undefined;
-  //если в imagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактироване записи с сохранением старого изображения), иначе формируем путь для нового файла изображения
-  const imagePath = hasImagePath ? cabinData.image : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
+  //если в hasImagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактироване записи с сохранением старого изображения), иначе если есть имя - формируем путь для нового файла изображения
+  const imagePath = hasImagePath
+    ? cabinData.image
+    : imageName
+      ? `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`
+      : '';
 
   //1.создаем/редактируем запись в БД 
   let query = supabase.from('cabins');
@@ -52,6 +57,8 @@ export async function createUpdateCabin (cabinData, updateId)
   //2.если запись создана/отредактирована успешно, загружаем файл изображения в storage БД
   //кроме случая, когда файл изображения не меняется
   if (hasImagePath) return data;
+  //кроме случая, когда файла изображения нет (режим дублирования записи)
+  if (!imageName) return data;
 
   const { error: storageError } = await supabase
     .storage
