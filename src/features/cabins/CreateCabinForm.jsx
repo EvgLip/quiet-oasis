@@ -10,7 +10,7 @@ import useCreateCabin from "./useCreateCabin";
 import useUpdateCabin from "./useUpdateCabin";
 
 
-function CreateCabinForm ({ cabinToUpdate = {} })
+function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
 {
   const { id: updateId, ...updateValue } = cabinToUpdate; // из <CabinRow/>
   const isUdateSession = Boolean(updateId); //сеанс обновления записи в БД
@@ -32,14 +32,22 @@ function CreateCabinForm ({ cabinToUpdate = {} })
       { newCabinData: { ...data, image }, id: updateId }, //data - данные формы подготовленные для update в БД
       {
         //data - возвращенные из БД после успешной обновления данных
-        onSuccess: () => reset()
+        onSuccess: () =>
+        {
+          reset();
+          closeModalMode?.();
+        },
       }
     );
     else createCabin(
       { ...data, image: image }, //data - данные формы подготовленные для записи в БД
       {
         //data - возвращенные из БД после успешной записи данных, содержит id новой записи
-        onSuccess: () => reset()
+        onSuccess: () =>
+        {
+          reset();
+          closeModalMode?.();
+        },
       }
     );
   }
@@ -47,7 +55,10 @@ function CreateCabinForm ({ cabinToUpdate = {} })
   function onError (errors) { console.log(errors); }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={closeModalMode ? 'modal' : 'regular'}
+    >
 
       <FormRow label='Наименование коттеджа' error={errors?.name?.message}>
         <Input type="text" id="name" disabled={isWorking}
@@ -126,8 +137,8 @@ function CreateCabinForm ({ cabinToUpdate = {} })
 
       <FormRow>
         {/*type - это атрибут HTML!*/}
-        <Button variation="secondary" type="reset">
-          Очистить
+        <Button $variation="secondary" type="reset" onClick={closeModalMode}>
+          Отменить
         </Button>
         <Button disabled={isWorking}>Сохранить</Button>
       </FormRow>
