@@ -9,7 +9,7 @@ import FormRow from "../../ui/FormRow";
 import useCreateCabin from "./useCreateCabin";
 import useUpdateCabin from "./useUpdateCabin";
 
-
+//eslint-disable-next-line
 function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
 {
   const { id: updateId, ...updateValue } = cabinToUpdate; // из <CabinRow/>
@@ -23,6 +23,8 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
   const { isCreating, createCabin } = useCreateCabin();
   const { isUdating, updateCabin } = useUpdateCabin();
   const isWorking = isCreating || isUdating;
+
+  const type = closeModalMode ? 'modal' : 'regular';
 
   function onSubmit (data)
   {
@@ -57,7 +59,7 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
   return (
     <Form
       onSubmit={handleSubmit(onSubmit, onError)}
-      type={closeModalMode ? 'modal' : 'regular'}
+      type={type}
     >
 
       <FormRow label='Наименование коттеджа' error={errors?.name?.message}>
@@ -138,7 +140,7 @@ function CreateCabinForm ({ cabinToUpdate = {}, closeModalMode })
       <FormRow>
         {/*type - это атрибут HTML!*/}
         <Button $variation="secondary" type="reset" onClick={closeModalMode}>
-          Отменить
+          {type === 'modal' ? 'Закрыть' : 'Очистить'}
         </Button>
         <Button disabled={isWorking}>Сохранить</Button>
       </FormRow>
