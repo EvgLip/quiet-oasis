@@ -1,9 +1,16 @@
 import styled from "styled-components";
-
 import Spinner from "../../ui/Spinner";
-import Table from "../../ui/Table";
 import CabinRow from "./CabinRow";
 import useGetCabins from "./useGetCabins";
+
+const Table = styled.div`
+  border: 1px solid var(--color-grey-200);
+
+  font-size: 1.4rem;
+  background-color: var(--color-grey-0);
+  border-radius: 7px;
+  overflow: hidden;
+`;
 
 const TableHeader = styled.header`
   display: grid;
@@ -28,17 +35,19 @@ function CabinTable ()
   if (isLoading) return <Spinner />;
 
   return (
-    <Table $columns='0.6fr 1.8fr 2.2fr 1fr 1fr 1fr'>
-      <Table.Header>
-        <div role="columnheader">Фото</div>
-        <div role="columnheader">Коттедж</div>
-        <div role="columnheader">Вместимость</div>
-        <div role="columnheader">Цена</div>
-        <div role="columnheader">Скидка</div>
-        <div role="columnheader">Действия</div>
-      </Table.Header>
+    <Table role="table">
+      <TableHeader role="row">
+        <div>Фото</div>
+        <div>Коттедж</div>
+        <div>Вместимость</div>
+        <div>Цена</div>
+        <div>Скидка</div>
+        <div>Действия</div>
+      </TableHeader>
 
-      <Table.Body data={cabins} render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />} />
+      {
+        cabins.map(cabin => <CabinRow cabin={cabin} key={cabin.id} />)
+      }
     </Table>
   );
 }

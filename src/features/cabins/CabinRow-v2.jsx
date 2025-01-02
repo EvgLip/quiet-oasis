@@ -8,7 +8,19 @@ import useDeleteCabin from "./useDeleteCabin";
 import useCreateCabin from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-import Table from "../../ui/Table";
+
+const TableRow = styled.div`
+  display: grid;
+  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+  column-gap: 2.4rem;
+  align-items: center;
+  justify-content: start;
+  padding: 1.4rem 2.4rem;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`;
 
 const Img = styled.img`
   display: block;
@@ -59,19 +71,19 @@ function CabinRow ({ cabin })
         regularPrice,
         discount,
         description,
-        image: '', //пустая строка, чтобы при удалении записи не удалить файл изображения
+        image: '',
       }
     );
   }
 
   return (
-    <Table.Row>
-      <Img src={imagePath} role="cell" />
-      <Cabin role="cell">{name}</Cabin>
-      <div role="cell">для {maxCapacity} чел</div>
-      <Price role="cell">{formatCurrency(regularPrice)}</Price>
-      {discount ? <Discount role="cell">{formatCurrency(discount)}</Discount> : <span role="cell">&mdash;</span>}
-      <Actions role="cell">
+    <TableRow role="row">
+      <Img src={imagePath} />
+      <Cabin>{name}</Cabin>
+      <div>для {maxCapacity} чел</div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      {discount ? <Discount>{formatCurrency(discount)}</Discount> : <span>&mdash;</span>}
+      <Actions>
         <button onClick={handleDuplicate} disabled={isCreating}><HiSquare2Stack /></button>
         <Modal>
           <Modal.Open opens='update-cabin'>
@@ -97,7 +109,7 @@ function CabinRow ({ cabin })
           </Modal.Window>
         </Modal>
       </Actions>
-    </Table.Row>
+    </TableRow>
   );
 }
 
