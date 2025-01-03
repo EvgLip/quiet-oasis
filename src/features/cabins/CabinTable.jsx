@@ -4,6 +4,7 @@ import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import CabinRow from "./CabinRow";
 import useGetCabins from "./useGetCabins";
+import Menus from "../../ui/Menus";
 
 const TableHeader = styled.header`
   display: grid;
@@ -28,18 +29,22 @@ function CabinTable ()
   if (isLoading) return <Spinner />;
 
   return (
-    <Table $columns='0.6fr 1.8fr 2.2fr 1fr 1fr 1fr'>
-      <Table.Header>
-        <div role="columnheader">Фото</div>
-        <div role="columnheader">Коттедж</div>
-        <div role="columnheader">Вместимость</div>
-        <div role="columnheader">Цена</div>
-        <div role="columnheader">Скидка</div>
-        <div role="columnheader">Действия</div>
-      </Table.Header>
+    <Menus>
+      <Table $columns='0.8fr 1fr 2.2fr 1fr 1fr 0.5fr'>
 
-      <Table.Body data={cabins} render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />} />
-    </Table>
+        <Table.Header>
+          <div role="columnheader">Фото</div>
+          <div role="columnheader">Коттедж</div>
+          <div role="columnheader">Вместимость</div>
+          <div role="columnheader">Цена</div>
+          <div role="columnheader">Скидка</div>
+          <div role="columnheader">Действия</div>
+        </Table.Header>
+
+        <Table.Body data={cabins} render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />} />
+
+      </Table>
+    </Menus>
   );
 }
 

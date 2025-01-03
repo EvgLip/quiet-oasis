@@ -9,7 +9,6 @@ import useCreateCabin from "./useCreateCabin";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
 
 const Img = styled.img`
   display: block;
@@ -38,11 +37,17 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
+const Actions = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
 //eslint-disable-next-line
 function CabinRow ({ cabin })
 {
+  const [showForm, setShowForm] = useState(false);
   const { isDeleting, deleteCabin } = useDeleteCabin();
-  const { createCabin } = useCreateCabin();
+  const { isCreating, createCabin } = useCreateCabin();
 
   const { id: cabinId, name, maxCapacity, regularPrice, discount, description, image: imagePath } = cabin;
 
@@ -67,36 +72,23 @@ function CabinRow ({ cabin })
       <div role="cell">для {maxCapacity} чел</div>
       <Price role="cell">{formatCurrency(regularPrice)}</Price>
       {discount ? <Discount role="cell">{formatCurrency(discount)}</Discount> : <span role="cell">&mdash;</span>}
-
-      <div role="cell">
+      <Actions role="cell">
+        <button onClick={handleDuplicate} disabled={isCreating}><HiSquare2Stack /></button>
         <Modal>
-
-          <Menus>
-            <Menus.Menu>
-
-              <Menus.Toggle id={cabinId} />
-
-              <Menus.List id={cabinId}>
-                <Menus.Button onClick={handleDuplicate} icon={<HiSquare2Stack />}>
-                  Дублировать
-                </Menus.Button>
-
-                <Modal.Open opens='update-cabin'>
-                  <Menus.Button icon={<HiPencil />}>Редактировать</Menus.Button>
-                </Modal.Open>
-
-                <Modal.Open opens='delete-cabin'>
-                  <Menus.Button icon={<HiTrash />}>Удалить</Menus.Button>
-                </Modal.Open>
-              </Menus.List>
-
-            </Menus.Menu>
-          </Menus>
-
+          <Modal.Open opens='update-cabin'>
+            <button>
+              <HiPencil />
+            </button>
+          </Modal.Open>
           <Modal.Window name='update-cabin'>
             <CreateCabinForm cabinToUpdate={cabin} />
           </Modal.Window>
 
+          <Modal.Open opens='delete-cabin'>
+            <button>
+              <HiTrash />
+            </button>
+          </Modal.Open>
           <Modal.Window name='delete-cabin'>
             <ConfirmDelete
               resourceName={`коттедж ${cabin.name}`}
@@ -104,9 +96,8 @@ function CabinRow ({ cabin })
               disabled={isDeleting}
             />
           </Modal.Window>
-
         </Modal>
-      </div>
+      </Actions>
     </Table.Row>
   );
 }
