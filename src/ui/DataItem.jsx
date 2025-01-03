@@ -19,8 +19,9 @@ const Label = styled.span`
     color: var(--color-brand-600);
   }
 `;
-
-function DataItem({ icon, label, children }) {
+/* eslint-disable react/prop-types */
+function DataItem ({ icon, label, children })
+{
   return (
     <StyledDataItem>
       <Label>

@@ -56,6 +56,7 @@ const Button = styled.button`
 
 const ModalContext = createContext();
 
+/* eslint-disable react/prop-types */
 function Modal ({ children })
 {
   const [openName, setOpenName] = useState('');
