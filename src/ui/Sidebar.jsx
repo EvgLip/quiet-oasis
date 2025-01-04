@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Logo from './Logo';
 import MainNav from './MainNav';
 
-const StyledSidebar = styled.aside`
+const StyledSidebar = styled.aside.attrs({ name: 'sidebar' })`
   grid-row: 1/-1;
 
   display:flex;

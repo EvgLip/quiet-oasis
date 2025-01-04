@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Header from "./Header";
 import Sidebar from "./Sidebar";
 
-const StyledApplayout = styled.div`
+const StyledApplayout = styled.div.attrs({ name: 'app-layout' })`
   display:grid;
   grid-template-columns: 26rem 1fr;
   grid-template-rows:auto 1fr;
@@ -17,7 +17,7 @@ const Main = styled.main`
   overflow: auto;
 `;
 
-const Container = styled.div`
+const Container = styled.div.attrs({ name: 'container' })`
   display: flex;
   flex-direction: column;
   gap: 3.2rem;

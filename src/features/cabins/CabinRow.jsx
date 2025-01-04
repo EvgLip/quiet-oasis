@@ -38,7 +38,7 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-//eslint-disable-next-line
+/* eslint-disable react/prop-types */
 function CabinRow ({ cabin })
 {
   const { isDeleting, deleteCabin } = useDeleteCabin();
