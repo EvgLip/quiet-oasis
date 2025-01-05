@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledSelect = styled.select`
+const StyledSelect = styled.select.attrs({ name: 'sort-by' })`
   font-size: 1.4rem;
   padding: 0.8rem 1.2rem;
   border: 1px solid

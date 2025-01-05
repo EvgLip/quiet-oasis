@@ -1,29 +1,28 @@
 import SortBy from "../../ui/SortBy";
 import Filter from "../../ui/Filter";
 import TableOperations from "../../ui/TableOperations";
+import { ORDER_STATUS } from "../../data/orderStatus";
 
-function BookingTableOperations() {
+function BookingTableOperations ()
+{
   return (
     <TableOperations>
       <Filter
         filterField="status"
         options={[
-          { value: "all", label: "All" },
-          { value: "checked-out", label: "Checked out" },
-          { value: "checked-in", label: "Checked in" },
-          { value: "unconfirmed", label: "Unconfirmed" },
+          { value: "all", label: "Все" },
+          { value: 'checked_out', label: ORDER_STATUS.checked_out },
+          { value: 'checked_in', label: ORDER_STATUS.checked_in },
+          { value: 'unconfirmed', label: ORDER_STATUS.unconfirmed },
         ]}
       />
 
       <SortBy
         options={[
-          { value: "startDate-desc", label: "Sort by date (recent first)" },
-          { value: "startDate-asc", label: "Sort by date (earlier first)" },
-          {
-            value: "totalPrice-desc",
-            label: "Sort by amount (high first)",
-          },
-          { value: "totalPrice-asc", label: "Sort by amount (low first)" },
+          { value: "startDate-asc", label: "По возрастанию даты" },
+          { value: "startDate-desc", label: "По убыванию даты" },
+          { value: "totalPrice-asc", label: "По возрастанию внесенной суммы", },
+          { value: "totalPrice-desc", label: "По убыванию внесенной суммы" },
         ]}
       />
     </TableOperations>

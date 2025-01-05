@@ -1,13 +1,12 @@
 import { formatDistance, parseISO, differenceInDays } from 'date-fns';
+import { ru } from 'date-fns/locale';
 
 // Мы хотим, чтобы эта функция работала как для объектов Date, так и для строк (которые поступают из Supabase).
 export const subtractDates = (dateStr1, dateStr2) =>
   differenceInDays(parseISO(String(dateStr1)), parseISO(String(dateStr2)));
 
 export const formatDistanceFromNow = (dateStr) =>
-  formatDistance(parseISO(dateStr), new Date(), {
-    addSuffix: true,
-  })
+  formatDistance(parseISO(dateStr), new Date(), { addSuffix: true, locale: ru })
     .replace('about ', '')
     .replace('in', 'In');
 
@@ -28,3 +27,15 @@ export const formatCurrency = (value) =>
   new Intl.NumberFormat('ru', { style: 'currency', currency: 'RUB' }).format(
     value
   );
+
+//склонение слова ночь по числам
+export function declensionWordNight (num)
+{
+  const arrNigth = ['ночей', 'ночь', 'ночи',];
+  const arrCase = [0, 1, 2, 2, 2];
+
+  return arrNigth[num % 100 >= 11 && num % 100 <= 19
+    ? 0
+    : arrCase[num % 10 <= 4 ? num % 10 : 0]
+  ];
+}

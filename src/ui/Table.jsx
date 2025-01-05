@@ -61,6 +61,7 @@ const Empty = styled.p`
 
 const TableContext = createContext();
 
+/* eslint-disable react/prop-types*/
 function Table ({ $columns, children })
 {
 

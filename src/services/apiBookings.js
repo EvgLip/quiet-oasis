@@ -1,12 +1,27 @@
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
+export async function getBookings ()
+{
+  const { data, error } = await supabase
+    .from('bookings')
+    .select('*, cabins(name), guests(fullName, email)');
+
+  if (error)
+  {
+    console.error(error);
+    throw new Error("Невозможно прочитать данные о бронировании.");
+  }
+
+  return data;
+}
+
 export async function getBooking (id)
 {
   const { data, error } = await supabase
-    .from("bookings")
-    .select("*, cabins(*), guests(*)")
-    .eq("id", id)
+    .from('bookings')
+    .select('*, cabins(*), guests(*)')
+    .eq('id', id)
     .single();
 
   if (error)
@@ -38,6 +53,7 @@ export async function getBookingsAfterDate (date)
 }
 
 // Возвращает все записи, которые были созданы после указанной даты
+// для конкретного гостя
 export async function getStaysAfterDate (date)
 {
   const { data, error } = await supabase

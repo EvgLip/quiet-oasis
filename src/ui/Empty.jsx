@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
-function Empty ({ resource })
+function Empty ({ resoursName })
 {
-  return <p>No {resource} could be found.</p>;
+  return <p>{`По ресурсу "${resoursName}" сведения не найдены.`}</p>;
 }
 
 export default Empty;

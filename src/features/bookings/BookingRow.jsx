@@ -4,8 +4,9 @@ import { format, isToday } from "date-fns";
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 
-import { formatCurrency } from "../../utils/helpers";
+import { declensionWordNight, formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
+import { ORDER_STATUS } from "../../data/orderStatus";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -33,9 +34,9 @@ const Amount = styled.div`
   font-family: "Sono";
   font-weight: 500;
 `;
-
-function BookingRow({
-  booking: {
+/* eslint-disable react/prop-types */
+function BookingRow ({ booking:
+  {
     id: bookingId,
     created_at,
     startDate,
@@ -44,14 +45,16 @@ function BookingRow({
     numGuests,
     totalPrice,
     status,
-    guests: { fullName: guestName, email },
+    guests: { email, fullName: guestName },
     cabins: { name: cabinName },
-  },
-}) {
+  }
+})
+{
+
   const statusToTagName = {
-    unconfirmed: "blue",
-    "checked-in": "green",
-    "checked-out": "silver",
+    [ORDER_STATUS.unconfirmed]: "blue",
+    [ORDER_STATUS.checked_in]: "green",
+    [ORDER_STATUS.checked_out]: "silver",
   };
 
   return (
@@ -60,23 +63,25 @@ function BookingRow({
 
       <Stacked>
         <span>{guestName}</span>
-        <span>{email}</span>
+        <span>email{email}</span>
       </Stacked>
 
       <Stacked>
         <span>
           {isToday(new Date(startDate))
-            ? "Today"
+            ? "Сегодня"
             : formatDistanceFromNow(startDate)}{" "}
-          &rarr; {numNights} night stay
+          &rarr; на {numNights} {declensionWordNight(numNights)}
         </span>
         <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
+          {format(new Date(startDate), "dd MM yyyy")} &mdash;{" "}
+          {format(new Date(endDate), "dd MM yyyy")}
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[status]}>
+        {status.replace("-", " ")}
+      </Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
     </Table.Row>

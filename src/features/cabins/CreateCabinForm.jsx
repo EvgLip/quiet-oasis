@@ -57,10 +57,7 @@ function CreateCabinForm ({ cabinToUpdate = {}, onClose })
   function onError (errors) { console.log(errors); }
 
   return (
-    <Form
-      onSubmit={handleSubmit(onSubmit, onError)}
-      type={type}
-    >
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type={type}>
 
       <FormRow label='Наименование коттеджа' error={errors?.name?.message}>
         <Input type="text" id="name" disabled={isWorking}

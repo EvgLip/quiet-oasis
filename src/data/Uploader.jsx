@@ -7,6 +7,7 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
+import { ORDER_STATUS } from "./orderStatus";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -17,19 +18,19 @@ import { guests } from "./data-guests";
 
 async function deleteGuests ()
 {
-  const { error } = await supabase.from("guests").delete().gt("id", 0);
+  const { error } = await supabase.from("guests").delete().gt("id", 0); //больше чем
   if (error) console.log(error.message);
 }
 
 async function deleteCabins ()
 {
-  const { error } = await supabase.from("cabins").delete().gt("id", 0);
+  const { error } = await supabase.from("cabins").delete().gt("id", 0); //больше чем
   if (error) console.log(error.message);
 }
 
 async function deleteBookings ()
 {
-  const { error } = await supabase.from("bookings").delete().gt("id", 0);
+  const { error } = await supabase.from("bookings").delete().gt("id", 0); //больше чем
   if (error) console.log(error.message);
 }
 
@@ -61,12 +62,14 @@ async function createBookings ()
 
   const finalBookings = bookings.map((booking) =>
   {
-    // Here relying on the order of cabins, as they don't have and ID yet
+    // Здесь мы полагаемся на порядок расположения коттеджей, 
+    // так как у них еще нет id
     const cabin = cabins.at(booking.cabinId - 1);
     const numNights = subtractDates(booking.endDate, booking.startDate);
     const cabinPrice = numNights * (cabin.regularPrice - cabin.discount);
+    //250 - стоимость завтрака
     const extrasPrice = booking.hasBreakfast
-      ? numNights * 15 * booking.numGuests
+      ? numNights * 250 * booking.numGuests
       : 0; // hardcoded breakfast price
     const totalPrice = cabinPrice + extrasPrice;
 
@@ -75,19 +78,19 @@ async function createBookings ()
       isPast(new Date(booking.endDate)) &&
       !isToday(new Date(booking.endDate))
     )
-      status = "checked-out";
+      status = ORDER_STATUS.checked_out; //"checked-out";
     if (
       isFuture(new Date(booking.startDate)) ||
       isToday(new Date(booking.startDate))
     )
-      status = "unconfirmed";
+      status = ORDER_STATUS.unconfirmed; //"unconfirmed";
     if (
       (isFuture(new Date(booking.endDate)) ||
         isToday(new Date(booking.endDate))) &&
       isPast(new Date(booking.startDate)) &&
       !isToday(new Date(booking.startDate))
     )
-      status = "checked-in";
+      status = ORDER_STATUS.checked_in; //"checked-in";
 
     return {
       ...booking,
@@ -114,12 +117,12 @@ function Uploader ()
   async function uploadAll ()
   {
     setIsLoading(true);
-    // Bookings need to be deleted FIRST
+    // Сначала необходимо удалить все бронирования
     await deleteBookings();
     await deleteGuests();
     await deleteCabins();
 
-    // Bookings need to be created LAST
+    // Заказы должны быть сделаны последними
     await createGuests();
     await createCabins();
     await createBookings();
@@ -148,14 +151,14 @@ function Uploader ()
         gap: "8px",
       }}
     >
-      <h3>SAMPLE DATA</h3>
+      <h3>ОТЛАДОЧНЫЕ ДАННЫЕ</h3>
 
       <Button onClick={uploadAll} disabled={isLoading}>
-        Upload ALL
+        Загрузить ВСЕ
       </Button>
 
       <Button onClick={uploadBookings} disabled={isLoading}>
-        Upload bookings ONLY
+        Загрузить ТОЛЬКО бронирование
       </Button>
     </div>
   );
