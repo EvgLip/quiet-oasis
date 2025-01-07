@@ -22,7 +22,7 @@ function BookingTable ()
           <div role="columnheader">Даты</div>
           <div role="columnheader">Статус</div>
           <div role="columnheader">Внесенная сумма</div>
-          <div role="columnheader">Поле</div>
+          <div role="columnheader"></div>
         </Table.Header>
 
         <Table.Body

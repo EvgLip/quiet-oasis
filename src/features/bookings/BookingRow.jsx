@@ -7,6 +7,9 @@ import Table from "../../ui/Table";
 import { declensionWordNight, formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import { ORDER_STATUS } from "../../utils/constants";
+import Menus from "../../ui/Menus";
+import { HiEye } from "react-icons/hi2";
+import { useNavigate } from "react-router";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -50,7 +53,7 @@ function BookingRow ({ booking:
   }
 })
 {
-
+  const navigate = useNavigate();
   const statusToTagName = {
     [ORDER_STATUS.unconfirmed]: "blue",
     [ORDER_STATUS.checked_in]: "green",
@@ -84,6 +87,19 @@ function BookingRow ({ booking:
       </Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
+
+      <Menus.Menu>
+        <Menus.Toggle id={bookingId} />
+        <Menus.List id={bookingId}>
+          <Menus.Button
+            icon={<HiEye />}
+            onClick={() => navigate(`/booking/${bookingId}`)}
+          >
+            Детали
+          </Menus.Button>
+        </Menus.List>
+
+      </Menus.Menu>
     </Table.Row>
   );
 }

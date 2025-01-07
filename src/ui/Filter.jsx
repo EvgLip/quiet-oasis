@@ -42,7 +42,9 @@ function Filter ({ filterField, options })
 {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options.at(0).value;
-  const { setPageParam } = useContext(BookingContext);
+  const context = useContext(BookingContext);
+
+  const { setPageParam = null } = context ? context : {};
 
   function handlerOnClick (value)
   {
@@ -50,7 +52,7 @@ function Filter ({ filterField, options })
     //т.к. данных может быть меньше чем на 2 или более страницы
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
-    setPageParam(1);
+    setPageParam?.(1);
   }
 
   return (
