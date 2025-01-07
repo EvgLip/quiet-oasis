@@ -6,7 +6,7 @@ import Table from "../../ui/Table";
 
 import { declensionWordNight, formatCurrency } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
-import { ORDER_STATUS } from "../../data/orderStatus";
+import { ORDER_STATUS } from "../../utils/constants";
 
 const Cabin = styled.div`
   font-size: 1.6rem;

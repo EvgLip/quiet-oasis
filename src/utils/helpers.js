@@ -39,3 +39,9 @@ export function declensionWordNight (num)
     : arrCase[num % 10 <= 4 ? num % 10 : 0]
   ];
 }
+
+export function uppercaseFirstChar (str)
+{
+  if (!str) return str;
+  return str[0].toUpperCase() + str.substring(1);
+}

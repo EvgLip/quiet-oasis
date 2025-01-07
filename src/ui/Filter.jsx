@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { BookingContext } from "../pages/Bookings";
 
 const StyledFilter = styled.div.attrs({ name: 'filter' })`
   border: 1px solid var(--color-grey-100);
@@ -40,11 +42,15 @@ function Filter ({ filterField, options })
 {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options.at(0).value;
+  const { setPageParam } = useContext(BookingContext);
 
   function handlerOnClick (value)
   {
+    //перед сменой фильтра новые данные должны отображаться со страницы 1
+    //т.к. данных может быть меньше чем на 2 или более страницы
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
+    // setPageParam(1);
   }
 
   return (

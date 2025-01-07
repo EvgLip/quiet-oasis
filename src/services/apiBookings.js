@@ -1,19 +1,38 @@
-import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
-export async function getBookings ()
-{
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*, cabins(name), guests(fullName, email)');
+import { getToday } from "../utils/helpers";
+import { PAGE_SIZE } from "../utils/constants";
 
+export async function getBookings ({ filter, sortBy, page })
+{
+  let query = supabase
+    .from('bookings')
+    .select('*, cabins(name), guests(fullName, email)', { count: 'exact' });
+
+  //ФИЛЬТРАЦИЯ
+  //если нужно использовать несколько фильтров, то можно передавать массив объектов filter
+  //и затем в цикле добавлять query = query[filter.method || 'eq'](filter.field, filter.value);
+  if (filter) query = query[filter.method || 'eq'](filter.field, filter.value);
+
+  //СОРТИРОВКА
+  if (sortBy) query = query.order(sortBy.field, { ascending: sortBy.ascending });
+
+  //РАЗБИВКА НА СТРАНИЦЫ PAGINATION
+  if (page)
+  {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
   if (error)
   {
     console.error(error);
     throw new Error("Невозможно прочитать данные о бронировании.");
   }
 
-  return data;
+  return { data, count };
 }
 
 export async function getBooking (id)

@@ -14,7 +14,7 @@ function CabinTable ()
   if (isLoading) return <Spinner />;
   if (!cabins) return <Empty resoursName={'коттеджи'} />;
 
-  //Фильтроция
+  //Фильтрация
   const filterValue = searchParams.get('discount') || 'all';
   let filteredCabins;
   if (filterValue === 'all') filteredCabins = cabins;

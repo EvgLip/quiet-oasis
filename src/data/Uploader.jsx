@@ -7,7 +7,7 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
-import { ORDER_STATUS } from "./orderStatus";
+import { ORDER_STATUS } from "../utils/constants";
 
 // const originalSettings = {
 //   minBookingLength: 3,

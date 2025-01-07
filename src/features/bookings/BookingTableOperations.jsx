@@ -1,7 +1,8 @@
 import SortBy from "../../ui/SortBy";
 import Filter from "../../ui/Filter";
 import TableOperations from "../../ui/TableOperations";
-import { ORDER_STATUS } from "../../data/orderStatus";
+import { ORDER_STATUS } from "../../utils/constants";
+import { uppercaseFirstChar } from "../../utils/helpers";
 
 function BookingTableOperations ()
 {
@@ -11,9 +12,9 @@ function BookingTableOperations ()
         filterField="status"
         options={[
           { value: "all", label: "Все" },
-          { value: 'checked_out', label: ORDER_STATUS.checked_out },
-          { value: 'checked_in', label: ORDER_STATUS.checked_in },
-          { value: 'unconfirmed', label: ORDER_STATUS.unconfirmed },
+          { value: 'checked_out', label: uppercaseFirstChar(ORDER_STATUS.checked_out) },
+          { value: 'checked_in', label: uppercaseFirstChar(ORDER_STATUS.checked_in) },
+          { value: 'unconfirmed', label: uppercaseFirstChar(ORDER_STATUS.unconfirmed) },
         ]}
       />
 

@@ -1,4 +1,10 @@
+import { useSearchParams } from "react-router-dom";
+import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
 import styled from "styled-components";
+
+import { PAGE_SIZE } from "../utils/constants";
+import { useContext } from "react";
+import { BookingContext } from "../pages/Bookings";
 
 const StyledPagination = styled.div`
   width: 100%;
@@ -25,7 +31,7 @@ const PaginationButton = styled.button`
   background-color: ${(props) =>
     props.active ? " var(--color-brand-600)" : "var(--color-grey-50)"};
   color: ${(props) => (props.active ? " var(--color-brand-50)" : "inherit")};
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--border-radius-sm);
   font-weight: 500;
   font-size: 1.4rem;
@@ -53,5 +59,66 @@ const PaginationButton = styled.button`
   &:hover:not(:disabled) {
     background-color: var(--color-brand-600);
     color: var(--color-brand-50);
+    border: 1px solid var(--color-brand-600);
+  }
+
+  &:hover:disabled {
+    background-color: var(--color-brand-50);
+    color: var(--color-brand-600);
+    border: 1px solid var(--color-brand-600);
   }
 `;
+
+/* eslint-disable react/prop-types */
+export default function Pagination ({ count })
+{
+  const { setPageParam } = useContext(BookingContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = !searchParams.get('page')
+    ? 1
+    : Number(searchParams.get('page'));
+
+  const pageCount = Math.ceil(count / PAGE_SIZE);
+
+  console.log('Pagination.currentPage ', currentPage);
+
+  function prevPage ()
+  {
+    const prev = currentPage === 1 ? currentPage : currentPage - 1;
+
+    searchParams.set('page', prev);
+    setSearchParams(searchParams);
+    // setPageParam(prev);
+  }
+
+  function nextPage ()
+  {
+    const next = currentPage === pageCount ? currentPage : currentPage + 1;
+
+    searchParams.set('page', next);
+    setSearchParams(searchParams);
+    // setPageParam(next);
+  }
+
+  return (
+    <StyledPagination>
+      <p>
+        Позиции с <span>{(currentPage - 1) * PAGE_SIZE + 1} </span>
+        по <span>{currentPage === pageCount ? count : currentPage * PAGE_SIZE} </span>
+        ( Всего <span>{count}</span> )
+      </p>
+
+      <Buttons>
+        <PaginationButton onClick={prevPage} disabled={currentPage === 1}>
+          <HiChevronLeft />
+          <span>Назад</span>
+        </PaginationButton>
+
+        <PaginationButton onClick={nextPage} disabled={currentPage === pageCount}>
+          <span>Вперед</span>
+          <HiChevronRight />
+        </PaginationButton>
+      </Buttons>
+    </StyledPagination>
+  );
+}
