@@ -18,7 +18,6 @@ function Bookings ()
   {
     searchParams.set('page', page);
     setSearchParams(searchParams);
-    console.log('useEffect');
   }, [page, searchParams, setSearchParams]);
 
   function setPageParam (pageNum)

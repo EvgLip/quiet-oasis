@@ -80,7 +80,7 @@ function BookingRow ({ booking:
       </Stacked>
 
       <Tag type={statusToTagName[status]}>
-        {status.replace("-", " ")}
+        {status}
       </Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
