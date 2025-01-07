@@ -50,7 +50,7 @@ function Filter ({ filterField, options })
     //т.к. данных может быть меньше чем на 2 или более страницы
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
-    // setPageParam(1);
+    setPageParam(1);
   }
 
   return (

@@ -80,32 +80,31 @@ export default function Pagination ({ count })
 
   const pageCount = Math.ceil(count / PAGE_SIZE);
 
-  console.log('Pagination.currentPage ', currentPage);
-
   function prevPage ()
   {
     const prev = currentPage === 1 ? currentPage : currentPage - 1;
 
-    searchParams.set('page', prev);
-    setSearchParams(searchParams);
-    // setPageParam(prev);
+    // searchParams.set('page', prev);
+    // setSearchParams(searchParams);
+    setPageParam(prev);
   }
 
   function nextPage ()
   {
     const next = currentPage === pageCount ? currentPage : currentPage + 1;
 
-    searchParams.set('page', next);
-    setSearchParams(searchParams);
-    // setPageParam(next);
+    // searchParams.set('page', next);
+    // setSearchParams(searchParams);
+    setPageParam(next);
   }
 
   return (
     <StyledPagination>
       <p>
+        Страница <span>{currentPage} из {pageCount}  /  </span>
         Позиции с <span>{(currentPage - 1) * PAGE_SIZE + 1} </span>
         по <span>{currentPage === pageCount ? count : currentPage * PAGE_SIZE} </span>
-        ( Всего <span>{count}</span> )
+        из <span>{count}</span>
       </p>
 
       <Buttons>

@@ -10,7 +10,7 @@ function useGetBookings ()
 {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
-  // const { page } = useContext(BookingContext);
+  const { page } = useContext(BookingContext);
 
   //Фильтрация данных
   const filterValue = searchParams.get('status');
@@ -27,9 +27,9 @@ function useGetBookings ()
   const sortBy = { field, ascending: direction === 'asc' };
 
   //Разбивка на страницы PAGINATION
-  let page = !searchParams.get('page')
-    ? 1
-    : Number(searchParams.get('page'));
+  // let page = !searchParams.get('page')
+  //   ? 1
+  //   : Number(searchParams.get('page'));
   //ЗАПРОС
   const { isLoading, error, data: { data: bookings = [], count = 0 } = {} } = useQuery(
     //const y = useQuery(

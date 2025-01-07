@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import BookingTable from "../features/bookings/BookingTable";
 import BookingTableOperations from "../features/bookings/BookingTableOperations";
@@ -14,11 +14,16 @@ function Bookings ()
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(1);
 
+  useEffect(function ()
+  {
+    searchParams.set('page', page);
+    setSearchParams(searchParams);
+    console.log('useEffect');
+  }, [page, searchParams, setSearchParams]);
+
   function setPageParam (pageNum)
   {
     setPage(pageNum);
-    searchParams.set('page', pageNum);
-    setSearchParams(searchParams);
   }
 
   return (
