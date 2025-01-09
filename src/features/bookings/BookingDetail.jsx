@@ -56,7 +56,7 @@ function BookingDetail ()
           </Button>
         }
 
-        <Button variation="secondary" onClick={moveBack}>
+        <Button $variation="secondary" onClick={moveBack}>
           Назад
         </Button>
       </ButtonGroup>
