@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ const Menu = styled.div`
   justify-content: flex-end;
 `;
 
-const StyledToggle = styled.button`
+const StyledToggle = styled.button.attrs({ name: 'menu-toggle' })`
   background: none;
   border: none;
   padding: 0.4rem;
@@ -36,8 +36,9 @@ const StyledList = styled.ul`
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
-  right: ${(props) => props.$position.x}px;
-  top: ${(props) => props.$position.y}px;
+  right: ${(props) => props.$position.right}px;
+  /* top: ${(props) => props.$position.top}px; */
+  bottom: ${(props) => props.$position.bottom}px;
 `;
 
 const StyledButton = styled.button`
@@ -71,7 +72,7 @@ const MenusContext = createContext();
 function Menus ({ children })
 {
   const [openId, setOpenId] = useState('');
-  const [position, setPosition] = useState(null);
+  const [position, setPosition] = useState({});
 
   const close = () =>
   {
@@ -95,8 +96,14 @@ function Toggle ({ id })
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition(
       {
-        x: window.innerWidth - rect.x - rect.width,
-        y: window.innerHeight - rect.y - rect.height > 150 ? (rect.y + rect.height + 8) : (rect.y - 150),
+        toogleX: rect.x,
+        toogleWidth: rect.width,
+        toogleY: rect.y,
+        toogleHeight: rect.height,
+        toogleBootom: rect.y + rect.height,
+        right: window.innerWidth - rect.x + 6,
+        top: rect.y,
+        bottom: window.innerHeight - rect.y - rect.height,
       }
     );
     openId === '' || openId !== id ? open(id) : close();
@@ -113,7 +120,21 @@ function List ({ id, children })
 {
   const { openId, position, close } = useContext(MenusContext);
 
-  const ref = useOutsideClick(() => close(openId));
+  const ref = useOutsideClick(() => close());
+
+  // useEffect(() =>
+  // {
+  //   if (ref.current)
+  //   {
+  //     const rect = ref.current.getBoundingClientRect();
+  //     // console.log('Effect openId ', openId, ' rect ', rect);
+  //     if (window.innerHeight - rect.y - rect.height < 0)
+  //     {
+  //       position.top = position.toogleY - rect.height;
+  //       // console.log('Effect top ', position.top);
+  //     }
+  //   }
+  // }, [openId, ref, position, position.top]);
 
   if (openId !== id) return null;
 

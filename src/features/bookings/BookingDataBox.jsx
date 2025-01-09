@@ -1,16 +1,23 @@
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
-import {
+import { ru } from 'date-fns/locale';
+import
+{
   HiOutlineChatBubbleBottomCenterText,
   HiOutlineCheckCircle,
-  HiOutlineCurrencyDollar,
   HiOutlineHomeModern,
 } from "react-icons/hi2";
+import { PiCurrencyRubFill } from "react-icons/pi";
 
 import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
-
-import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import 
+{
+  formatDistanceFromNow,
+  formatCurrency,
+  declensionWordNight,
+  declensionWordGuest
+} from "../../utils/helpers";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -101,8 +108,10 @@ const Footer = styled.footer`
   text-align: right;
 `;
 
-// A purely presentational component
-function BookingDataBox({ booking }) {
+// Чисто презентационный компонент
+/* eslint-disable react/prop-types */
+function BookingDataBox ({ booking })
+{
   const {
     created_at,
     startDate,
@@ -125,16 +134,16 @@ function BookingDataBox({ booking }) {
         <div>
           <HiOutlineHomeModern />
           <p>
-            {numNights} nights in Cabin <span>{cabinName}</span>
+            {`${numNights} ${declensionWordNight(numNights)} в коттедже `}<span>{cabinName}</span>
           </p>
         </div>
 
         <p>
-          {format(new Date(startDate), "EEE, MMM dd yyyy")} (
+          {format(new Date(startDate), "EEE, dd MMM yyyy", { locale: ru })} (
           {isToday(new Date(startDate))
-            ? "Today"
+            ? "Сегодня"
             : formatDistanceFromNow(startDate)}
-          ) &mdash; {format(new Date(endDate), "EEE, MMM dd yyyy")}
+          ) &mdash; {format(new Date(endDate), "EEE, dd MMM yyyy", { locale: ru })}
         </p>
       </Header>
 
@@ -142,45 +151,47 @@ function BookingDataBox({ booking }) {
         <Guest>
           {countryFlag && <Flag src={countryFlag} alt={`Flag of ${country}`} />}
           <p>
-            {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
+            {guestName} {numGuests > 1
+              ? `+ ${numGuests - 1} ${declensionWordGuest(numGuests)}`
+              : ""}
           </p>
           <span>&bull;</span>
           <p>{email}</p>
           <span>&bull;</span>
-          <p>National ID {nationalID}</p>
+          <p>Национальное удостоверение {nationalID}</p>
         </Guest>
 
         {observations && (
           <DataItem
             icon={<HiOutlineChatBubbleBottomCenterText />}
-            label="Observations"
+            label="Пожелания"
           >
             {observations}
           </DataItem>
         )}
 
-        <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
-          {hasBreakfast ? "Yes" : "No"}
+        <DataItem icon={<HiOutlineCheckCircle />} label="Завтрак: ">
+          {hasBreakfast ? "включен в стоимость" : " - "}
         </DataItem>
 
         <Price isPaid={isPaid}>
-          <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
+          <DataItem icon={<PiCurrencyRubFill />} label={`Общая цена`}>
             {formatCurrency(totalPrice)}
 
             {hasBreakfast &&
-              ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
+              ` (${formatCurrency(cabinPrice)} коттедж + ${formatCurrency(
                 extrasPrice
-              )} breakfast)`}
+              )} завтрак)`}
           </DataItem>
 
-          <p>{isPaid ? "Paid" : "Will pay at property"}</p>
+          <p>{isPaid ? "Оплачено" : "Оплата при регистрации"}</p>
         </Price>
       </Section>
 
       <Footer>
-        <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p>
+        <p>Забронировано {format(new Date(created_at), "EEE, dd MMM yyyy", { locale: ru })}</p>
       </Footer>
-    </StyledBookingDataBox>
+    </StyledBookingDataBox >
   );
 }
 

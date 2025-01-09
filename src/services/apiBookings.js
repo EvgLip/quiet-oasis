@@ -3,6 +3,7 @@ import supabase from "./supabase";
 import { getToday } from "../utils/helpers";
 import { PAGE_SIZE } from "../utils/constants";
 
+//////////////////////////////////////////////////////////////
 export async function getBookings ({ filter, sortBy, page })
 {
   let query = supabase
@@ -35,6 +36,7 @@ export async function getBookings ({ filter, sortBy, page })
   return { data, count };
 }
 
+//////////////////////////////////////////////////////////////
 export async function getBooking (id)
 {
   const { data, error } = await supabase
@@ -52,6 +54,7 @@ export async function getBooking (id)
   return data;
 }
 
+//////////////////////////////////////////////////////////////
 // Возвращает все БРОНИРОВАНИЯ, созданные после указанной даты. 
 // Полезно, например, для получения данных о бронированиях, созданных за последние 30 дней.
 export async function getBookingsAfterDate (date)
@@ -71,6 +74,7 @@ export async function getBookingsAfterDate (date)
   return data;
 }
 
+//////////////////////////////////////////////////////////////
 // Возвращает все записи, которые были созданы после указанной даты
 // для конкретного гостя
 export async function getStaysAfterDate (date)
@@ -91,6 +95,7 @@ export async function getStaysAfterDate (date)
   return data;
 }
 
+//////////////////////////////////////////////////////////////
 // Activity means that there is a check in or a check out today
 export async function getStaysTodayActivity ()
 {
@@ -114,6 +119,7 @@ export async function getStaysTodayActivity ()
   return data;
 }
 
+//////////////////////////////////////////////////////////////
 export async function updateBooking (id, obj)
 {
   const { data, error } = await supabase
@@ -131,6 +137,7 @@ export async function updateBooking (id, obj)
   return data;
 }
 
+//////////////////////////////////////////////////////////////
 export async function deleteBooking (id)
 {
   // REMEMBER RLS POLICIES

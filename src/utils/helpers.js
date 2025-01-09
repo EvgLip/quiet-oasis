@@ -28,13 +28,25 @@ export const formatCurrency = (value) =>
     value
   );
 
-//склонение слова ночь по числам
+//склонение слова НОЧЬ по числам
 export function declensionWordNight (num)
 {
   const arrNigth = ['ночей', 'ночь', 'ночи',];
   const arrCase = [0, 1, 2, 2, 2];
 
   return arrNigth[num % 100 >= 11 && num % 100 <= 19
+    ? 0
+    : arrCase[num % 10 <= 4 ? num % 10 : 0]
+  ];
+}
+
+//склонение слова ГОСТЬ по числам
+export function declensionWordGuest (num)
+{
+  const arrGuest = ['гостей', 'гость', 'гостя',];
+  const arrCase = [0, 1, 2, 2, 2];
+
+  return arrGuest[num % 100 >= 11 && num % 100 <= 19
     ? 0
     : arrCase[num % 10 <= 4 ? num % 10 : 0]
   ];
