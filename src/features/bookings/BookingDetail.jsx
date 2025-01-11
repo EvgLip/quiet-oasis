@@ -13,6 +13,7 @@ import useGetBooking from "./useGetBooking";
 import { ORDER_STATUS } from "../../utils/constants";
 import Spinner from "../../ui/Spinner";
 import { useNavigate } from "react-router";
+import useCheckout from "../check-in-out/useCheckout";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -23,10 +24,11 @@ const HeadingGroup = styled.div`
 function BookingDetail ()
 {
   const { isLoading, booking, error } = useGetBooking();
+  const { checkout, isCheckingOut } = useCheckout();
   const navigate = useNavigate();
 
   const moveBack = useMoveBack();
-  if (isLoading) return <Spinner />;
+  if (isLoading || isCheckingOut) return <Spinner />;
 
   const { id: bookingId, status } = booking;
 
@@ -53,6 +55,15 @@ function BookingDetail ()
         {status === ORDER_STATUS.unconfirmed &&
           <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
             Регистрация
+          </Button>
+        }
+
+        {status === ORDER_STATUS.checked_in &&
+          <Button
+            onClick={() => checkout(bookingId)}
+            disabled={isCheckingOut}
+          >
+            Выписать
           </Button>
         }
 

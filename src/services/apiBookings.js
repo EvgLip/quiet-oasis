@@ -132,7 +132,7 @@ export async function updateBooking (id, obj)
   if (error)
   {
     console.error(error);
-    throw new Error("Не удалось обновить данные по брони.");
+    throw new Error("Не удалось обновить данные по бронированию.");
   }
   return data;
 }

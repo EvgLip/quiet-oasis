@@ -30,6 +30,8 @@ function useGetBookings ()
   // let page = !searchParams.get('page')
   //   ? 1
   //   : Number(searchParams.get('page'));
+
+
   //ЗАПРОС
   const { isLoading, error, data: { data: bookings = [], count = 0 } = {} } = useQuery(
     //const y = useQuery(

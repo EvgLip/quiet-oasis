@@ -9,7 +9,7 @@ export default function useGetBooking ()
   const { isLoading, data: booking, error } = useQuery(
     //const y = useQuery(
     {
-      queryKey: ['cabins'],
+      queryKey: ['booking', bookingId],
       queryFn: () => getBooking(bookingId),  //функция выборки данных
       retry: false, //без повторных попыток
     }

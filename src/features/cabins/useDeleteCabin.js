@@ -11,10 +11,7 @@ export default function useDeleteCabin ()
       mutationFn: ({ cabinId, imagePath }) => deleteCabinApi(cabinId, imagePath),
       onSuccess: () =>
       {
-        queryClient.invalidateQueries(
-          {
-            queryKey: 'cabins',
-          });
+        queryClient.invalidateQueries({ queryKey: 'cabins' });
         toast.success('Запись успешно удалена');
       },
       onError: err => toast.error(err.message),

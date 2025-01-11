@@ -9,12 +9,12 @@ import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
 import { ORDER_STATUS } from "../utils/constants";
 
-// const originalSettings = {
-//   minBookingLength: 3,
-//   maxBookingLength: 30,
-//   maxGuestsPerBooking: 10,
-//   breakfastPrice: 15,
-// };
+const originalSettings = {
+  minBookingLength: 3,
+  maxBookingLength: 30,
+  maxGuestsPerBooking: 10,
+  breakfastPrice: 250,
+};
 
 async function deleteGuests ()
 {
@@ -69,7 +69,7 @@ async function createBookings ()
     const cabinPrice = numNights * (cabin.regularPrice - cabin.discount);
     //250 - стоимость завтрака
     const extrasPrice = booking.hasBreakfast
-      ? numNights * 250 * booking.numGuests
+      ? originalSettings.breakfastPrice * numNights * booking.numGuests
       : 0; // hardcoded breakfast price
     const totalPrice = cabinPrice + extrasPrice;
 
