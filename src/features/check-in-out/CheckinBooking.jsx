@@ -133,7 +133,7 @@ function CheckinBooking ()
         <Button onClick={handleCheckin}
           disabled={!confirmPaid || isCheckinIn}
         >
-          Регистрация бронирования № {bookingId}
+          Зарегистрировать бронь № {bookingId}
         </Button>
         <Button $variation="secondary" onClick={moveBack}>
           Back

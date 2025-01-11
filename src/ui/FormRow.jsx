@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const StyledFormRow = styled.div`
+const StyledFormRow = styled.div.attrs({ name: 'form-row' })`
   display: grid;
   align-items: center;
   grid-template-columns: 24rem 1.2fr 1fr;
@@ -9,11 +9,11 @@ const StyledFormRow = styled.div`
   padding: 1.2rem 0;
 
   &:first-child {
-    padding-top: 0;
+    padding-top: 0.5rem;
   }
 
   &:last-child {
-    padding-bottom: 0;
+    padding-bottom: 0.3rem;
   }
 
   &:not(:last-child) {

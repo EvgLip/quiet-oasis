@@ -5,7 +5,7 @@ import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 import useOutsideClick from "../hooks/useOutsideClick";
 
-const StyledModal = styled.div`
+const StyledModal = styled.div.attrs({ name: 'modal' })`
   position: fixed;
   top: 50%;
   left: 50%;
