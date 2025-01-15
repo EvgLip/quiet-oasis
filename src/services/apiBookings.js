@@ -146,7 +146,7 @@ export async function deleteBooking (id)
   if (error)
   {
     console.error(error);
-    throw new Error("Не удалось удалить бронь.");
+    throw new Error(`Не удалось удалить бронирование № ${id}.`);
   }
   return data;
 }

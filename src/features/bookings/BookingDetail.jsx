@@ -1,19 +1,24 @@
+import { useNavigate } from "react-router";
+import { HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
 
-import BookingDataBox from "./BookingDataBox";
 import Row from "../../ui/Row";
 import Heading from "../../ui/Heading";
 import Tag from "../../ui/Tag";
 import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
-
-import { useMoveBack } from "../../hooks/useMoveBack";
-import useGetBooking from "./useGetBooking";
-import { ORDER_STATUS } from "../../utils/constants";
 import Spinner from "../../ui/Spinner";
-import { useNavigate } from "react-router";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+
+import useGetBooking from "./useGetBooking";
+import useDeleteBooking from "./useDeleteBooking";
 import useCheckout from "../check-in-out/useCheckout";
+import { useMoveBack } from "../../hooks/useMoveBack";
+
+import BookingDataBox from "./BookingDataBox";
+import { ORDER_STATUS } from "../../utils/constants";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -21,10 +26,12 @@ const HeadingGroup = styled.div`
   align-items: center;
 `;
 
+
 function BookingDetail ()
 {
   const { isLoading, booking, error } = useGetBooking();
   const { checkout, isCheckingOut } = useCheckout();
+  const { isDeleting, deleteBooking } = useDeleteBooking();
   const navigate = useNavigate();
 
   const moveBack = useMoveBack();
@@ -66,6 +73,25 @@ function BookingDetail ()
             Выписать
           </Button>
         }
+
+        <Modal>
+          <Modal.Open opens='delete-booking'>
+            <Button
+              $variation="danger"
+              icon={<HiTrash />}
+            >
+              {`Удалить бронирование № ${bookingId}`}
+            </Button>
+          </Modal.Open>
+
+          <Modal.Window name='delete-booking'>
+            <ConfirmDelete
+              resourceName={`бронирование № ${bookingId}`}
+              onConfirm={() => deleteBooking(bookingId, { onSettled: () => navigate(-1), })}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
 
         <Button $variation="secondary" onClick={moveBack}>
           Назад

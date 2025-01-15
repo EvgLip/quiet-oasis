@@ -61,7 +61,10 @@ function Modal ({ children })
 {
   const [openName, setOpenName] = useState('');
 
-  const close = () => setOpenName('');
+  const close = () =>
+  {
+    setOpenName('');
+  };
   const open = setOpenName;
 
   return (
@@ -91,12 +94,15 @@ function Window ({ children, name })
   return createPortal(
     <Overlay>
       <StyledModal ref={ref}>
+
         <Button onClick={close}>
           <HiXMark />
         </Button>
+
         {
           cloneElement(children, { onClose: close })
         }
+
       </StyledModal>
     </Overlay>,
     document.body

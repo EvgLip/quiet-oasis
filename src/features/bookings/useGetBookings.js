@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-import { useContext } from "react";
 
 import { getBookings } from "../../services/apiBookings";
 import { ORDER_STATUS, PAGE_SIZE } from "../../utils/constants";
