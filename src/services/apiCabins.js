@@ -24,7 +24,7 @@ export async function createUpdateCabin (cabinData, updateId)
   //в таблице БД хранится путь к изображению
   //если в cabinData файл изображения, то формируем новое имя файла, иначе undefined
   const imageName = cabinData.image.name ? `${Math.random().toString().replaceAll('0.', '')}-${cabinData.image.name}`.replaceAll('/', '') : undefined;
-  //если в hasImagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактироване записи с сохранением старого изображения), иначе если есть имя - формируем путь для нового файла изображения
+  //если в hasImagePath строка содержащая путь к файлу в storage БД то берем ее (т.е. идет редактирование данных с сохранением старого изображения), иначе если есть имя - формируем путь для нового файла изображения
   const imagePath = hasImagePath
     ? cabinData.image
     : imageName

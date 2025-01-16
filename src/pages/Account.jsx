@@ -1,5 +1,6 @@
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
+import UpdateUserDataForm from '../features/authentication/UpdateUserDataForm';
 
 function Account ()
 {
@@ -9,7 +10,7 @@ function Account ()
 
       <Row>
         <Heading as="h3">Изменение данных пользователя</Heading>
-        <p>Форма внесения изменений</p>
+        <UpdateUserDataForm />
       </Row>
 
       <Row>

@@ -4,7 +4,7 @@ import { getCurrentUser } from "../../services/apiAuth";
 
 export function useUser ()
 {
-  const { isLoading, data: user, isSuccess, isError } = useQuery(
+  const { isLoading, data: user, isError } = useQuery(
     {
       queryKey: ['user'],
       queryFn: getCurrentUser,
@@ -13,7 +13,6 @@ export function useUser ()
 
   return {
     isLoading,
-    isSuccess,
     user,
     isAuthenticated: !isError && user?.role === 'authenticated',
     isError,

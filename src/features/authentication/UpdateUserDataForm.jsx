@@ -28,10 +28,10 @@ function UpdateUserDataForm ()
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormRow label="Email address">
+      <FormRow label="Email">
         <Input value={email} disabled />
       </FormRow>
-      <FormRow label="Full name">
+      <FormRow label="Полное имя">
         <Input
           type="text"
           value={fullName}
@@ -39,7 +39,7 @@ function UpdateUserDataForm ()
           id="fullName"
         />
       </FormRow>
-      <FormRow label="Avatar image">
+      <FormRow label="Аватарка">
         <FileInput
           id="avatar"
           accept="image/*"
@@ -47,10 +47,10 @@ function UpdateUserDataForm ()
         />
       </FormRow>
       <FormRow>
-        <Button type="reset" variation="secondary">
-          Cancel
+        <Button type="reset" $variation="secondary">
+          Отменить
         </Button>
-        <Button>Update account</Button>
+        <Button>Применить изменения</Button>
       </FormRow>
     </Form>
   );

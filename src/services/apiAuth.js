@@ -62,3 +62,32 @@ export async function userSignup ({ fullName, email, password })
 
   return data;
 }
+/////////////////////////////////////////////////////////
+export async function updateCurrentUser ({ password, fullName, avatar })
+{
+  //1. изменение пароля или имени
+  let updateData;
+  if (password) updateData = { password };
+  if (fullName) updateData = { data: { fullName } };
+  const { data, error } = await supabase.auth.updateUser(updateData);
+
+  if (error)
+  {
+    console.log('apiAuth.updateCurrentUser.ERROR ', error.message);
+    throw new Error(error.message);
+  }
+
+  if (!avatar) return;
+
+  //2. загружаем аватарку в хранилище БД
+  const fileName = `avatar-${data.user.id}-${Math.random().toString().replaceAll('0.', '')}`;
+
+  const { error: storageError } = await supabase.storage.from('avatars').upload(fileName);
+  if (storageError)
+  {
+    console.log('apiAuth.updateCurrentUser.STORAGE_ERROR ', storageError.message);
+    throw new Error(storageError.message);
+  }
+
+  //загружаем путь к аватарке в запись конкретного user
+}

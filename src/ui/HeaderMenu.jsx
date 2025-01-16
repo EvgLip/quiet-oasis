@@ -1,9 +1,11 @@
-import styled from "styled-components";
-import ButtonIcon from "./ButtonIcon";
-import { HiOutlineUser } from "react-icons/hi2";
 import { useNavigate } from "react-router";
+import styled from "styled-components";
+import { HiOutlineUser } from "react-icons/hi2";
 
-const StyledHeaderMenu = styled.ul`
+import ButtonIcon from "./ButtonIcon";
+import Logout from "../features/authentication/Logout";
+
+const StyledHeaderMenu = styled.ul.attrs({ name: 'header-menu' })`
   
   display:flex;
   gap:0.4rem;
@@ -20,9 +22,8 @@ export default function HeaderMenu ()
           <HiOutlineUser />
         </ButtonIcon>
       </li>
-      <Logout />
       <li>
-
+        <Logout />
       </li>
     </StyledHeaderMenu>
   );
