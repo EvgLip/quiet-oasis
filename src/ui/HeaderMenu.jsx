@@ -18,7 +18,7 @@ export default function HeaderMenu ()
   return (
     <StyledHeaderMenu>
       <li>
-        <ButtonIcon onClick={() => navigate('/account')}>
+        <ButtonIcon name="account" onClick={() => navigate('/account')}>
           <HiOutlineUser />
         </ButtonIcon>
       </li>

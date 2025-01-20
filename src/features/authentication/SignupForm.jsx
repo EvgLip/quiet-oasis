@@ -91,7 +91,12 @@ function SignupForm ()
 
       <FormRow>
         {/*type - это атрибут HTML!*/}
-        <Button $variation="secondary" type="reset" disabled={isLoading}>
+        <Button
+          onClick={reset}
+          $variation="secondary"
+          type="reset"
+          disabled={isLoading}
+        >
           Отменить
         </Button>
         <Button disabled={isLoading}>

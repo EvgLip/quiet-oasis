@@ -52,8 +52,15 @@ export function declensionWordGuest (num)
   ];
 }
 
+//замена первой буквы на заглавную
 export function uppercaseFirstChar (str)
 {
   if (!str) return str;
   return str[0].toUpperCase() + str.substring(1);
+}
+
+export function getFileExtension (fileName)
+{
+  const extension = fileName.slice(fileName.lastIndexOf('.'));
+  return extension;
 }

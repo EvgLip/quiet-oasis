@@ -24,7 +24,7 @@ const Box = styled.div`
   }
 
   & p {
-    font-family: "Sono";
+    font-family: "Sofia Sans";
     margin-bottom: 3.2rem;
     color: var(--color-grey-500);
   }

@@ -24,16 +24,16 @@ const Cabin = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
-  font-family: "Sono";
+  font-family: "Sofia Sans";
 `;
 
 const Price = styled.div`
-  font-family: "Sono";
+  font-family: "Sofia Sans";
   font-weight: 600;
 `;
 
 const Discount = styled.div`
-  font-family: "Sono";
+  font-family: "Sofia Sans";
   font-weight: 500;
   color: var(--color-green-700);
 `;

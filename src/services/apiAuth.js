@@ -1,4 +1,6 @@
-import supabase from "./supabase";
+import supabase, { supabaseUrl } from "./supabase";
+
+import { getFileExtension } from '../utils/helpers';
 
 /////////////////////////////////////////////////////////
 export async function login ({ email, password })
@@ -77,17 +79,36 @@ export async function updateCurrentUser ({ password, fullName, avatar })
     throw new Error(error.message);
   }
 
-  if (!avatar) return;
+  if (!avatar) return data;
 
   //2. загружаем аватарку в хранилище БД
-  const fileName = `avatar-${data.user.id}-${Math.random().toString().replaceAll('0.', '')}`;
+  const fileName = `avatar-${data.user.id}-${Math.random().toString().replaceAll('0.', '')}${getFileExtension(avatar.name)}`;
 
-  const { error: storageError } = await supabase.storage.from('avatars').upload(fileName);
+  const { error: storageError } = await supabase.storage
+    .from('avatars')
+    .upload(fileName, avatar);
+
   if (storageError)
   {
     console.log('apiAuth.updateCurrentUser.STORAGE_ERROR ', storageError.message);
     throw new Error(storageError.message);
   }
 
-  //загружаем путь к аватарке в запись конкретного user
+  //3. добовляем путь к аватарке в запись конкретного user
+  //https://ensdctanfssdtelodftl.supabase.co/storage/v1/object/public/avatars/01.jpg
+  const { data: updateUser, error: avatarError } = await supabase.auth.updateUser(
+    {
+      data: {
+        avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`
+      }
+    }
+  );
+
+  if (avatarError)
+  {
+    console.log('apiAuth.updateCurrentUser.AVATAR_ERROR ', avatarError.message);
+    throw new Error(avatarError.message);
+  }
+
+  return updateUser;
 }

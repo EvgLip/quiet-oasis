@@ -1,10 +1,11 @@
 import { useForm } from "react-hook-form";
+
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-import { useUpdateUser } from "./useUpdateUser";
+import useUpdateUser from "./useUpdateUser";
 
 function UpdatePasswordForm ()
 {
@@ -21,7 +22,7 @@ function UpdatePasswordForm ()
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow
-        label="Password (min 8 characters)"
+        label="Новый пароль (мин 8 символов)"
         error={errors?.password?.message}
       >
         <Input
@@ -30,17 +31,17 @@ function UpdatePasswordForm ()
           autoComplete="current-password"
           disabled={isUpdating}
           {...register("password", {
-            required: "This field is required",
+            required: "Обязательное поле",
             minLength: {
               value: 8,
-              message: "Password needs a minimum of 8 characters",
+              message: "Пароль не может быть менее 8 символов",
             },
           })}
         />
       </FormRow>
 
       <FormRow
-        label="Confirm password"
+        label="Подтверждение пароля"
         error={errors?.passwordConfirm?.message}
       >
         <Input
@@ -49,17 +50,17 @@ function UpdatePasswordForm ()
           id="passwordConfirm"
           disabled={isUpdating}
           {...register("passwordConfirm", {
-            required: "This field is required",
+            required: "Обязательное поле",
             validate: (value) =>
-              getValues().password === value || "Passwords need to match",
+              getValues().password === value || "Пароли не совпадают",
           })}
         />
       </FormRow>
       <FormRow>
-        <Button onClick={reset} type="reset" variation="secondary">
-          Cancel
+        <Button onClick={reset} type="reset" $variation="secondary">
+          Отменить
         </Button>
-        <Button disabled={isUpdating}>Update password</Button>
+        <Button disabled={isUpdating}>Изменить пароль</Button>
       </FormRow>
     </Form>
   );

@@ -52,7 +52,7 @@ const Header = styled.header`
   }
 
   & span {
-    font-family: "Sono";
+    font-family: "Sofia Sans";
     font-size: 2rem;
     margin-left: 4px;
   }
