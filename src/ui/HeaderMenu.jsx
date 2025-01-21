@@ -4,6 +4,7 @@ import { HiOutlineUser } from "react-icons/hi2";
 
 import ButtonIcon from "./ButtonIcon";
 import Logout from "../features/authentication/Logout";
+import ModeToggle from "./ModeToggle";
 
 const StyledHeaderMenu = styled.ul.attrs({ name: 'header-menu' })`
   
@@ -21,6 +22,9 @@ export default function HeaderMenu ()
         <ButtonIcon name="account" onClick={() => navigate('/account')}>
           <HiOutlineUser />
         </ButtonIcon>
+      </li>
+      <li>
+        <ModeToggle />
       </li>
       <li>
         <Logout />
