@@ -22,7 +22,7 @@ const Icon = styled.div`
   align-items: center;
   justify-content: center;
 
-  /* Make these dynamic, based on the received prop */
+  /* Делаем их динамичными, основываясь на полученных предложениях */
   background-color: var(--color-${(props) => props.color}-100);
 
   & svg {
@@ -47,7 +47,9 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
-function Stat({ icon, title, value, color }) {
+/* eslint-disable react/prop-types */
+function Stat ({ icon, title, value, color })
+{
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>

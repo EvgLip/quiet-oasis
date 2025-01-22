@@ -57,6 +57,7 @@ export async function getBooking (id)
 //////////////////////////////////////////////////////////////
 // Возвращает все БРОНИРОВАНИЯ, созданные после указанной даты. 
 // Полезно, например, для получения данных о бронированиях, созданных за последние 30 дней.
+// Дата ISOString
 export async function getBookingsAfterDate (date)
 {
   const { data, error } = await supabase
@@ -76,7 +77,7 @@ export async function getBookingsAfterDate (date)
 
 //////////////////////////////////////////////////////////////
 // Возвращает все записи, которые были созданы после указанной даты
-// для конкретного гостя
+// по каждому пользователю
 export async function getStaysAfterDate (date)
 {
   const { data, error } = await supabase

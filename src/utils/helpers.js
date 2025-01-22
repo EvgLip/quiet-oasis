@@ -15,9 +15,9 @@ export const getToday = function (options = {})
 {
   const today = new Date();
 
-  // Это необходимо для сравнения с created_at из Supabase, потому что это не 0.0.0.0, поэтому нам нужно установить дату на конец дня, когда мы будем сравнивать ее с более ранними датами
+  // Это необходимо для сравнения с created_at из Supabase, потому что она не 0.0.0.0, поэтому нам нужно установить дату на конец дня, когда мы будем сравнивать ее с более ранними датами
   if (options?.end)
-    // Set to the last second of the day
+    // Устанавливается на последнюю секунду дня
     today.setUTCHours(23, 59, 59, 999);
   else today.setUTCHours(0, 0, 0, 0);
   return today.toISOString();
