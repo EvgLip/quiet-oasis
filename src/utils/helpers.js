@@ -28,6 +28,20 @@ export const formatCurrency = (value) =>
     value
   );
 
+////////////////////////////////////////////////////
+//формат дат
+export function formattedDate (date)
+{
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  const formatDate = new Intl.DateTimeFormat("ru-RU", options);
+  return formatDate.format(date);
+}
+
+
 //склонение слова НОЧЬ по числам
 export function declensionWordNight (num)
 {
