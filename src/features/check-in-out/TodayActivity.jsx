@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
+import useTodayActivity from "./useTodayActivity";
+import Spinner from "../../ui/Spinner";
+import TodayItem from "./TodayItem";
 
 const StyledToday = styled.div`
   /* Box */
@@ -21,7 +24,7 @@ const TodayList = styled.ul`
   overflow: scroll;
   overflow-x: hidden;
 
-  /* Removing scrollbars for webkit, firefox, and ms, respectively */
+  /* Удаление полос прокрутки для webkit, firefox и ms соответственно */
   &::-webkit-scrollbar {
     width: 0 !important;
   }
@@ -36,14 +39,31 @@ const NoActivity = styled.p`
   margin-top: 0.8rem;
 `;
 
-function Today() {
+export default function TodayActivity ()
+{
+  const { isLoading, todayActivityData } = useTodayActivity();
+
   return (
     <StyledToday>
       <Row type="horizontal">
-        <Heading as="h2">Today</Heading>
+        <Heading as="h3">На сегодня</Heading>
       </Row>
+
+      {
+        isLoading
+          ? <Spinner />
+          : todayActivityData?.length > 0
+            ? <TodayList>
+              {
+                todayActivityData.map(activity => <TodayItem activity={activity} key={activity.id} />)
+              }
+            </TodayList>
+            : <NoActivity>
+              список задач пуст
+            </NoActivity>
+      }
+
     </StyledToday>
   );
 }
 
-export default Today;

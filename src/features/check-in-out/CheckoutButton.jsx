@@ -1,9 +1,14 @@
 import Button from "../../ui/Button";
+import useCheckout from "./useCheckout";
 
-function CheckoutButton({ bookingId }) {
+/* eslint-disable react/prop-types */
+function CheckoutButton ({ bookingId })
+{
+  const { checkout, isCheckingOut } = useCheckout();
+
   return (
-    <Button variation="primary" size="small">
-      Check out
+    <Button $size="small" onClick={() => checkout(bookingId)} disabled={isCheckingOut}>
+      Выписать
     </Button>
   );
 }

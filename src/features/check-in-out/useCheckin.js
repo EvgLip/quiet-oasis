@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-// import { useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 
 import { updateBooking } from "../../services/apiBookings";
@@ -8,7 +8,7 @@ import { ORDER_STATUS } from "../../utils/constants";
 
 export default function useCheckin ()
 {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { mutate: checkin, isLoading: isCheckinIn } = useMutation(
     {
@@ -24,7 +24,7 @@ export default function useCheckin ()
       {
         queryClient.invalidateQueries({ active: true });
         toast.success(`Бронирование № ${data.id} успешно зарегистрировано`);
-        // navigate('/');
+        navigate('/');
       },
 
       onError: () => toast.error('Во время регистрации произошла ошибка.')

@@ -2,10 +2,10 @@ import styled, { css } from "styled-components";
 
 const sizes = {
   small: css`
-    padding: 0.4rem 0.8rem;
+    padding: 1rem 0.8rem;
     text-transform: uppercase;
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-size: 1rem;
+    font-weight: 500;
     text-align: center;
   `,
   medium: css`
@@ -71,14 +71,14 @@ const Button = styled.button`
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-  ${props => sizes[props.$sizes]}
+  ${props => sizes[props.$size]}
   ${props => variations[props.$variation]}
 `;
 
 Button.defaultProps =
 {
   $variation: 'primary',
-  $sizes: 'medium',
+  $size: 'medium',
 };
 
 export default Button;

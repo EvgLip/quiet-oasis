@@ -1,7 +1,7 @@
 import supabase from "./supabase";
 
 import { getToday } from "../utils/helpers";
-import { PAGE_SIZE } from "../utils/constants";
+import { ORDER_STATUS, PAGE_SIZE } from "../utils/constants";
 
 //////////////////////////////////////////////////////////////
 export async function getBookings ({ filter, sortBy, page })
@@ -97,20 +97,21 @@ export async function getStaysAfterDate (date)
 }
 
 //////////////////////////////////////////////////////////////
-// Activity means that there is a check in or a check out today
+// Активность означает, что сегодня есть регистрация заезда или отъезда
 export async function getStaysTodayActivity ()
 {
   const { data, error } = await supabase
     .from("bookings")
     .select("*, guests(fullName, nationality, countryFlag)")
     .or(
-      `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
+      `and(status.eq.${ORDER_STATUS.unconfirmed},startDate.eq.${getToday()}),and(status.eq.${ORDER_STATUS.checked_in},endDate.eq.${getToday()})`
     )
     .order("created_at");
 
-  // Эквивалентно этому. Но, запрашивая это, мы загружаем только те данные, которые нам действительно нужны, иначе нам потребовались бы все когда-либо созданные бронирования
+  // Эквивалентно этому.
   // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
   // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
+  // Запрашивая это, загружаются только те данные, которые действительно нужны, а не все когда-либо созданные бронирования
 
   if (error)
   {

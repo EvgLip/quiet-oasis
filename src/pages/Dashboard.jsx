@@ -8,7 +8,7 @@ function Dashboard ()
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Статистика</Heading>
+        <Heading as="h1">Главная</Heading>
         <DashboardFilter />
       </Row>
       <DashboardLayout />
