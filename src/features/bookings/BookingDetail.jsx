@@ -19,6 +19,7 @@ import { useMoveBack } from "../../hooks/useMoveBack";
 
 import BookingDataBox from "./BookingDataBox";
 import { ORDER_STATUS } from "../../utils/constants";
+import Empty from "../../ui/Empty";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -29,13 +30,14 @@ const HeadingGroup = styled.div`
 
 function BookingDetail ()
 {
-  const { isLoading, booking, error } = useGetBooking();
+  const { isLoading, booking } = useGetBooking();
   const { checkout, isCheckingOut } = useCheckout();
   const { isDeleting, deleteBooking } = useDeleteBooking();
   const navigate = useNavigate();
 
   const moveBack = useMoveBack();
   if (isLoading || isCheckingOut) return <Spinner />;
+  if (!booking) return <Empty resoursName='Бронирование' />;
 
   const { id: bookingId, status } = booking;
 

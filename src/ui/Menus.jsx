@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
@@ -93,6 +93,7 @@ function Toggle ({ id })
 
   function handleClick (e)
   {
+    e.stopPropagation();
     const rect = e.target.closest('button').getBoundingClientRect();
     setPosition(
       {
@@ -120,21 +121,7 @@ function List ({ id, children })
 {
   const { openId, position, close } = useContext(MenusContext);
 
-  const ref = useOutsideClick(() => close());
-
-  // useEffect(() =>
-  // {
-  //   if (ref.current)
-  //   {
-  //     const rect = ref.current.getBoundingClientRect();
-  //     // console.log('Effect openId ', openId, ' rect ', rect);
-  //     if (window.innerHeight - rect.y - rect.height < 0)
-  //     {
-  //       position.top = position.toogleY - rect.height;
-  //       // console.log('Effect top ', position.top);
-  //     }
-  //   }
-  // }, [openId, ref, position, position.top]);
+  const ref = useOutsideClick(close, false);
 
   if (openId !== id) return null;
 

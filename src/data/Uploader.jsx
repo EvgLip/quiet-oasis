@@ -104,7 +104,7 @@ async function createBookings ()
     };
   });
 
-  console.log('finalBookings ', finalBookings);
+  //console.log('Uploader.createBookings.finalBookings ', finalBookings);
 
   const { error } = await supabase.from("bookings").insert(finalBookings);
   if (error) console.log(error.message);
