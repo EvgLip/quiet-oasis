@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
 
@@ -42,7 +41,7 @@ const Discount = styled.div`
 function CabinRow ({ cabin })
 {
   const { isDeleting, deleteCabin } = useDeleteCabin();
-  const { createCabin } = useCreateCabin();
+  const { isCreating, createCabin } = useCreateCabin();
 
   const { id: cabinId, name, maxCapacity, regularPrice, discount, description, image: imagePath } = cabin;
 
@@ -77,7 +76,11 @@ function CabinRow ({ cabin })
               <Menus.Toggle id={cabinId} />
 
               <Menus.List id={cabinId}>
-                <Menus.Button onClick={handleDuplicate} icon={<HiSquare2Stack />}>
+                <Menus.Button
+                  onClick={handleDuplicate}
+                  icon={<HiSquare2Stack />}
+                  disabled={isCreating}
+                >
                   Дублировать
                 </Menus.Button>
 

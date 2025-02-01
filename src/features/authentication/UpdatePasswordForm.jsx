@@ -20,7 +20,7 @@ function UpdatePasswordForm ()
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} name="UpdatePasswordForm">
       <FormRow
         label="Новый пароль (мин 8 символов)"
         error={errors?.password?.message}

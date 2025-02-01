@@ -27,7 +27,7 @@ function ConfirmDelete ({ resourceName, onConfirm, onClose, disabled })
     <StyledConfirmDelete>
       <Heading as="h3">Удаление: {resourceName}</Heading>
       <p>
-        {`Вы уверены, что хотите удалить строку "${resourceName}" из базы данных без возможности востановления?`}
+        {`Вы уверены, что хотите удалить запись о "${resourceName}" из базы данных без возможности востановления?`}
       </p>
 
       <div>

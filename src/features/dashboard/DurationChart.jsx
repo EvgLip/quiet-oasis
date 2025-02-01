@@ -135,7 +135,7 @@ function prepareData (startData, stays)
 
   return data;
 }
-
+/* eslint-disable react/prop-types */
 export default function DurationChart ({ confirmedStays })
 {
   const { isDarkMode } = useModeToggleContext();

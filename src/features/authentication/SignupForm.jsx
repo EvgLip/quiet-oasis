@@ -31,7 +31,7 @@ function SignupForm ()
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} name="SignupForm">
       <FormRow label="Имя" error={errors?.fullName?.message}>
         <Input
           type="text"
@@ -45,6 +45,7 @@ function SignupForm ()
         <Input
           type="email"
           id="email"
+          autoComplete="off"
           {...register("email",
             {
               required: 'Обязательное поле',
@@ -62,6 +63,7 @@ function SignupForm ()
         <Input
           type="password"
           id="password"
+          autoComplete="off"
           {...register("password",
             {
               required: 'Обязательное поле',

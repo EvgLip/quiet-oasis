@@ -10,7 +10,6 @@ import useUpdateUser from "./useUpdateUser";
 
 function UpdateUserDataForm ()
 {
-  // Нам не нужно состояние загрузки, и мы можем сразу же использовать пользовательские данные, потому что мы знаем, что они уже были загружены на данный момент (беруться из кэша)
   const {
     user: {
       email,
@@ -48,7 +47,7 @@ function UpdateUserDataForm ()
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} name="UpdateUserDataForm">
       <FormRow label="Email">
         <Input value={email} disabled />
       </FormRow>
