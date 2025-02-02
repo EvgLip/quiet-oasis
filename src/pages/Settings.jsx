@@ -6,7 +6,7 @@ function Settings ()
 {
   return (
     <Row>
-      <Heading as="h1">Настройка политик отеля</Heading>;
+      <Heading as="h1">Настройка политик отеля</Heading>
       <UpdateSettingsForm />
     </Row>
   );
